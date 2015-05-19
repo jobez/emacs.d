@@ -117,3 +117,4 @@
     (transpose-words arg)))
 
 (define-key clojure-mode-map (kbd "M-t") 'live-transpose-words-with-hyphens)
+(define-key clojure-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
