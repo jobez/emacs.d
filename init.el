@@ -16,6 +16,7 @@
 (load "paredit-conf.el")
 (load "haskellcustoms.el")
 (load "shen.el")
+(load "js.el")
 ;; (load "prodigy.el")
 (load "web.el")
 (load "bindings.el")
