@@ -76,6 +76,7 @@
 (depends-on "smartparens")
 (depends-on "smex")
 (depends-on "tagedit")
+(depends-on "tern")
 (depends-on "undo-tree")
 (depends-on "win-switch")
 (depends-on "yaml-mode")
