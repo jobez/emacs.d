@@ -242,3 +242,7 @@
           (rename-buffer new-name)
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
+
+;; magit
+
+(setq magit-last-seen-setup-instructions "1.4.0")
