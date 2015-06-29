@@ -1,3 +1,5 @@
+(add-to-list 'auto-mode-alist `(,(rx ".js" string-end) . js2-mode))
+
 ;; tern
 
 (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
