@@ -1,5 +1,6 @@
 ;;jshint mode
 (require 'flymake-jshint)
+(require 'multiple-cursors)
 (add-hook 'js2-mode-hook
      (lambda () (flymake-mode t)))
 
@@ -11,3 +12,6 @@
 
 (add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
 (add-to-list 'auto-mode-alist '("\\.sass\\'" . sass-mode))
+
+;; web-mode
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
