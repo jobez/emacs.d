@@ -22,3 +22,21 @@
 
 (eval-after-load 'css-mode
   '(define-key css-mode-map (kbd "C-c b") 'web-beautify-css))
+
+;; marshall's stuff
+
+(defun my-paredit-nonlisp ()
+  "Turn on paredit mode for non-lisps."
+  (interactive)
+  (set (make-local-variable 'paredit-space-for-delimiter-predicates)
+       '((lambda (endp delimiter) nil)))
+  (paredit-mode 1))
+
+(custom-set-variables '(js2-basic-offset 2))
+
+(add-hook 'js2-mode-hook 'my-paredit-nonlisp) ;use with the above function
+
+(eval-after-load "js2-mode"
+ '(progn
+    (define-key js2-mode-map "{" 'paredit-open-curly)
+    (define-key js2-mode-map "}" 'paredit-close-curly-and-newline)))
