@@ -22,6 +22,7 @@
 (load "bindings.el")
 (load "highlight.el")
 (load "coli.el")
+(load "nodejs-repl-eval.el")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
