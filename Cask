@@ -81,7 +81,6 @@
 (depends-on "tern")
 (depends-on "tern-auto-complete")
 (depends-on "undo-tree")
-(depends-on "web-beautify")
 (depends-on "web-mode")
 (depends-on "win-switch")
 (depends-on "yaml-mode")
