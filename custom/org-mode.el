@@ -26,3 +26,12 @@ textheight=10in, marginparsep=7pt, marginparwidth=.6in}
      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
      ("\\paragraph{%s}" . "\\paragraph*{%s}")
      ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+'((emacs-lisp . t)
+ (clojure . t)))
+;; Show syntax highlighting per language native mode in *.org
+(setq org-src-fontify-natively t)
+;; For languages with significant whitespace like Python:
+(setq org-src-preserve-indentation t)

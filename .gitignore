@@ -5,6 +5,7 @@ ert.el
 *.tar
 *~
 \#*
+/.cask/*
 neotree-autoloads.el
 .smex-items
 *~$
