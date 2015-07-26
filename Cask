@@ -36,7 +36,7 @@
 (depends-on "flymake-cursor")
 (depends-on "flymake-easy")
 (depends-on "flymake-jshint")
-(depends-on "gh")
+(depends-on "fountain-mode")
 (depends-on "gist")
 (depends-on "git-commit-mode")
 (depends-on "git-rebase-mode")
