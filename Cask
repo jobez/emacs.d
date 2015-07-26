@@ -63,6 +63,7 @@
 (depends-on "markdown-mode")
 (depends-on "mode-compile")
 (depends-on "multiple-cursors")
+(depends-on "muse")
 (depends-on "neotree")
 (depends-on "nginx-mode")
 (depends-on "nodejs-repl")
