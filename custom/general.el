@@ -37,6 +37,14 @@
 (setq js2-mode-show-strict-warnings t)
 ;; (setq js2-pretty-multiline-declarations (quote all))
 
+;; js3-mode indentation
+
+(setq js3-lazy-operators t)
+(setq js3-expr-indent-offset 2)
+(setq js3-paren-indent-offset 2)
+(setq js3-square-indent-offset 2)
+(setq js3-curly-indent-offset 2)
+
 ;; autocomplete
 (add-hook 'after-init-hook 'global-company-mode)
 
