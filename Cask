@@ -106,6 +106,7 @@
 (depends-on "web-mode")
 (depends-on "web-server")
 (depends-on "win-switch")
+(depends-on "writeroom-mode")
 (depends-on "yaml-mode")
 (depends-on "yasnippet")
 (depends-on "zenburn-theme")
