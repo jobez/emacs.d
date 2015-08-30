@@ -40,7 +40,8 @@
   (interactive)
   (cider-switch-to-current-repl-buffer)
   (cider-insert "(reload!)")
-  (cider-repl-return))
+  (cider-repl-return)
+  (previous-buffer))
 
 (defun save-and-reload-ns ()
   (interactive)
