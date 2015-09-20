@@ -2,8 +2,6 @@
 (require 'flymake-jshint)
 (require 'multiple-cursors)
 
-;; (require 'nodejs-repl-eval)
-
 ;; mode hooks
 (add-to-list 'auto-mode-alist '("\\.jst\\.tpl$" . html-mode))
 
@@ -16,6 +14,4 @@
 ;; web-mode
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
-;; (add-hook 'js2-mode-hook
-;;           (lambda ()
-;;             (local-set-key (kbd "C-x x") #'nodejs-repl-eval-dwim)))
+(web-mode-markup-indent-offset 2)

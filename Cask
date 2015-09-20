@@ -57,6 +57,7 @@
 (depends-on "jsx-mode")
 (depends-on "kibit-mode")
 (depends-on "less-css-mode")
+(depends-on "load-dir")
 (depends-on "log4e")
 (depends-on "logito")
 (depends-on "magit")

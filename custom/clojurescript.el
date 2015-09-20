@@ -1,7 +1,5 @@
 (require 'cider)
 
-
-
 (setq cljs-repls (make-hash-table :test 'equal))
 
 (puthash  "browser" "(do (require 'weasel.repl.websocket) (cemerick.piggieback/cljs-repl (weasel.repl.websocket/repl-env :ip \"127.0.0.1\" :port 9001)))"  cljs-repls)

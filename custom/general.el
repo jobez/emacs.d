@@ -13,8 +13,6 @@
 (tool-bar-mode 0)
 (global-visual-line-mode t)
 
-;;(set-variable 'magit-emacsclient-executable "/usr/local/Cellar/emacs/HEAD/bin/emacsclient")
-
 ;; indentation
 
 (setq-default indent-tabs-mode nil)
@@ -131,7 +129,7 @@
 
 ;;remove all trailing whitespace and trailing blank lines before
 ;;saving the file
-(defvar live-ignore-whitespace-modes '(markdown-mode))
+(defvar live-ignore-whitespace-modes '(markdown-mode objc-mode))
 (defun live-cleanup-whitespace ()
   (if (not (member major-mode live-ignore-whitespace-modes))
       (let ((whitespace-style '(trailing empty)) )
