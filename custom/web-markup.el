@@ -14,4 +14,4 @@
 ;; web-mode
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 
-(web-mode-markup-indent-offset 2)
+(setq web-mode-markup-indent-offset 2)
