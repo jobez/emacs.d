@@ -4,6 +4,8 @@
 
 (puthash  "browser" "(do (require 'weasel.repl.websocket) (cemerick.piggieback/cljs-repl (weasel.repl.websocket/repl-env :ip \"127.0.0.1\" :port 9001)))"  cljs-repls)
 
+(puthash "rhino" "(cemerick.piggieback/cljs-repl (cljs.repl.rhino/repl-env))" cljs-repls)
+
 (puthash "ambly" "(do (require '[cljs.repl :as repl])
 (require '[ambly.core :as ambly])
 (let [repl-env (ambly.core/repl-env :choose-first-discovered true)]
@@ -18,7 +20,7 @@
 (puthash "rfz-ios" "(do (require '[cljs.repl :as repl])
 (require '[rfz.mobilenext.rfz-jsc-env :as rfz-env])
 (let [repl-env (rfz-env/repl-env :choose-first-discovered true
-                               :reload-ns 'rfz.mobilenext.core)]
+                               :reload-ns 'rfz.mobilenext.ios.core)]
   (cemerick.piggieback/cljs-repl repl-env)))" cljs-repls)
 
 ;; this gives you a cljs repl interactive prompt before jacking in with a clojurescript buffer
@@ -33,6 +35,16 @@
 
 ;; so this stuff is a hack to get the ambly repl to reload
 ;; a user defined main namespace
+
+(defun relaunch-simulator (repl-type)
+  (interactive "sreboot into which cljs repl: ")
+  (async-shell-command "/Users/johannbestowrous/rfz/debtapp/app/mobilescripts/devtime \"iPhone 6\" \"8.4\"")
+  (cider-switch-to-current-repl-buffer)
+  (cider-insert ":cljs/quit")
+  (cider-repl-return)
+  (cider-insert (gethash repl-type cljs-repls))
+  (cider-repl-return)
+  (previous-buffer))
 
 (defun reload-main-ns ()
   (interactive)
@@ -54,3 +66,6 @@
 
 (add-hook 'cider-mode-hook (lambda ()
                              (local-set-key (kbd "C-x /") #'save-and-reload-ns)))
+
+(add-hook 'cider-mode-hook (lambda ()
+                             (local-set-key (kbd "C-x (") #'relaunch-simulator)))
