@@ -4,6 +4,7 @@
 (require 'clojure-mode)
 (require 'cider-test)
 (require 'clojure-mode-extra-font-locking)
+(require 'cider)
 
 (setq auto-mode-alist (append '(("\\.cljs$" . clojure-mode)
                                 ("\\.cljx$" . clojure-mode)
@@ -118,3 +119,18 @@
 
 (define-key clojure-mode-map (kbd "M-t") 'live-transpose-words-with-hyphens)
 (define-key clojure-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
+
+;; from this chill blogpost
+;; http://eigenhombre.com/clojure/2014/07/05/emacs-customization-for-clojure/
+(defun cider-eval-last-sexp-and-append ()
+  "Evaluate the expression preceding point and append result."
+  (interactive)
+  (let* ((cur-buffer (current-buffer))
+         (last-sexp (cider-last-sexp)))
+    (with-current-buffer cur-buffer
+      (insert " => "))
+    (cider-interactive-eval last-sexp
+                            (cider-insert-eval-handler cur-buffer))))
+
+(add-hook 'cider-mode-hook (lambda ()
+                             (local-set-key (kbd "H-x") #'cider-eval-last-sexp-and-append)))
