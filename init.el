@@ -28,3 +28,6 @@
 
 ;; packages
 (load "js.el")
+
+;;key stuff
+(setq ns-function-modifier 'hyper)
