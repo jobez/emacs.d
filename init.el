@@ -14,16 +14,14 @@
 
 ;; customs
 (load "general.el")
+(load "helmcustoms.el")
 (load "clojure.el")
 (load "clojurescript.el")
-(load "paredit-conf.el")
 (load "haskell.el")
 (load "shen.el")
 (load "js.el")
 (load "rfz.el")
 (load "web-markup.el")
-(load "bindings.el")
-(load "highlight.el")
 (load "commonlisp.el")
 
 ;; packages

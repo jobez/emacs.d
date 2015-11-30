@@ -46,6 +46,8 @@
 (depends-on "go-mode")
 (depends-on "google")
 (depends-on "haskell-mode")
+(depends-on "helm")
+(depends-on "helm-projectile")
 (depends-on "highlight")
 (depends-on "htmlize")
 (depends-on "httprepl")

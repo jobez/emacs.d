@@ -9,7 +9,6 @@
 (global-undo-tree-mode)
 (set-frame-parameter nil 'unsplittable t)
 
-;; (setq ns-auto-hide-menu-bar t)
 (tool-bar-mode 0)
 (global-visual-line-mode t)
 
@@ -20,28 +19,6 @@
 (setq tab-width 2)
 (setq c-basic-indent 2)
 (setq c-basic-offset 2)
-(setq js-indent-level 2)
-(setq css-indent-level 2)
-(setq css-indent-offset 2)
-
-;; (setq js-indent-level 2)
-;; (setq js2-always-indent-assigned-expr-in-decls-p t)
-(setq js2-basic-offset 2)
-(setq-default js2-basic-offset 2)
-;; (setq js2-cleanup-whitespace t)
-;; (setq js2-enter-indents-newline t)
-(setq js2-highlight-external-variables nil)
-;; (setq js2-indent-on-enter-key t)
-(setq js2-mode-show-strict-warnings t)
-;; (setq js2-pretty-multiline-declarations (quote all))
-
-;; js3-mode indentation
-
-(setq js3-lazy-operators t)
-(setq js3-expr-indent-offset 2)
-(setq js3-paren-indent-offset 2)
-(setq js3-square-indent-offset 2)
-(setq js3-curly-indent-offset 2)
 
 ;; autocomplete
 (add-hook 'after-init-hook 'global-company-mode)
@@ -51,20 +28,7 @@
 ;; (setq ffip-patterns (append `("*.erb" "*.tpl" "*.php" "*.css" "*.ru" "*.json" "*.rb" "*.sass" "*.scss" "*.clj" "*.cljs") ffip-patterns))
 (setq ffip-full-paths 1)
 
-(ido-mode 1)
-(ido-everywhere 1)
-(ido-vertical-mode nil)
-(flx-ido-mode 1)
-(icomplete-mode 1)
-(setq ido-enable-prefix nil
-      ido-create-new-buffer 'always
-      ido-max-prospects 10
-      ido-default-file-method 'selected-window
-      ido-everywhere 1)
-;; disable ido faces to see flx highlights.
-(setq ido-use-faces nil)
-
-                                        ;remove bells
+;;remove bells
 (setq ring-bell-function 'ignore)
 
 (defvar live-tmp-dir "~/.emacs.d/tmp/")
@@ -192,47 +156,7 @@
 (exec-path-from-shell-initialize)
 
 ;; Ignore .DS_Store files with ido mode
-(add-to-list 'ido-ignore-files "\\.DS_Store")
-
-(require 'smex)
-(smex-initialize)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;; This is your old M-x.
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-
-
-(defun live-delete-whitespace-except-one ()
-  (interactive)
-  (just-one-space -1))
-
-
-(defun live-backwards-kill-line ()
-  "Kill all characters on current line before point. Same as
-  passing 0 as an argument to kill-line"
-  (interactive)
-  (kill-line 0))
-
-(defun live-end-of-buffer-p ()
-  "Predicate fn to determine whether point is at the end of the
-   buffer"
-  (<= (buffer-size) (point)))
-
-(defun live-indent-defun ()
-  "Indent the current defun."
-  (interactive)
-  (save-excursion
-    (mark-defun)
-    (indent-region (region-beginning) (region-end))))
-
-(defun live-delete-and-extract-sexp ()
-  "Delete the sexp and return it."
-  (interactive)
-  (let* ((begin (point)))
-    (forward-sexp)
-    (let* ((result (buffer-substring-no-properties begin (point))))
-      (delete-region begin (point))
-      result)))
+;; (add-to-list 'ido-ignore-files "\\.DS_Store")
 
 (defun rename-file-and-buffer (new-name)
   "Renames both current buffer and file it's visiting to NEW-NAME."
@@ -248,7 +172,3 @@
           (rename-buffer new-name)
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
-
-;; magit
-
-(setq magit-last-seen-setup-instructions "1.4.0")
