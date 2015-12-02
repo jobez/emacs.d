@@ -29,3 +29,21 @@
 
 ;;key stuff
 (setq ns-function-modifier 'hyper)
+(setq mac-option-modifier 'super)
+(setq mac-command-modifier 'meta)
+
+(global-set-key (kbd "s-.") 'avy-goto-word-or-subword-1)
+(global-set-key (kbd "s-p") 'ace-window)
+
+
+(setq aw-dispatch-always t)
+(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+
+(defun live-paredit-delete-horizontal-space ()
+  (interactive)
+  (just-one-space -1)
+  (while (ignore-errors (paredit-forward-up) t))
+  (backward-char)
+  (live-paredit-delete-horizontal-space))
+
+(define-key paredit-mode-map (kbd "s-\\") 'live-paredit-delete-horizontal-space)

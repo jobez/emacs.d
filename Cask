@@ -3,10 +3,12 @@
 (source melpa)
 
 (depends-on "ace-jump-mode")
+(depends-on "ace-window")
 (depends-on "ag")
 (depends-on "alert")
 (depends-on "ansi")
 (depends-on "auto-complete")
+(depends-on "avy-migemo")
 (depends-on "bm")
 (depends-on "cask")
 (depends-on "cider")

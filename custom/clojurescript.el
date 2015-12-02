@@ -44,8 +44,10 @@
   (with-current-buffer (cider-current-repl-buffer)
     (goto-char (point-max))
     (insert ":cljs/quit")
+    (goto-char (point-max))
     (cider-repl-return)
     (sit-for 1)
+    (goto-char (point-max))
     (insert (gethash repl-type cljs-repls))
     (cider-repl-return)))
 
