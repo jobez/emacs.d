@@ -63,6 +63,35 @@
   (save-buffer)
   (reload-main-ns))
 
+(defun planck-inject-if (process output)
+  (let* ((evaled (first (split-string output))))
+    (progn
+      (message evaled)
+      (when buffer-inject
+        (backward-kill-sexp)
+        (insert evaled)))))
+
+(defun planck-init nil
+  (interactive)
+  (setq buffer-inject nil)
+  (when (not (get-process "planck-init"))
+    (start-process-shell-command "planck-init" "planck-proc" "planck")
+    (set-process-filter (get-process "planck-init") 'planck-inject-if))
+  (message "planck a go go"))
+
+(defun planck-eval-replace nil
+  (interactive)
+  (if (not (get-process "planck-init"))
+      (message "planck not started")
+    (let* ((last-sexp (cider-last-sexp)))
+      (setq buffer-inject t)
+      (process-send-string "planck-init" (concat  last-sexp
+                                                  "\n")))))
+
+(global-set-key (kbd "H-p r") 'planck-eval-replace)
+
+(global-set-key (kbd "H-p i") #'planck-init)
+
 (add-hook 'cider-mode-hook (lambda ()
                              (local-set-key (kbd "H-.") #'repls-with-cljs-prompt)))
 
