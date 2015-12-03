@@ -172,3 +172,5 @@
           (rename-buffer new-name)
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
+
+(add-to-list 'auto-mode-alist '("\\.fountain$" . fountain-mode))
