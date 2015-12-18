@@ -23,11 +23,24 @@
                                :reload-ns 'rfz.mobilenext.ios.core)]
   (cemerick.piggieback/cljs-repl repl-env)))" cljs-repls)
 
+(puthash "rfz-fig-ios" "(do (require '[rfz.cljs-build.figwheel :as fg])
+(fg/repl-start-dev :rfz-rn [:ios]))" cljs-repls)
+
+(defun hash-table-keys (hash-table)
+  (let ((keys ()))
+    (maphash (lambda (k v) (push k keys)) hash-table)
+    keys))
+
+(setq cljs-repl-keys
+      `((name . "CLJS repl modes")
+        (candidates . ,(hash-table-keys cljs-repls))
+        (action . (lambda (candidate)
+                    (helm-marked-candidates)))))
 ;; this gives you a cljs repl interactive prompt before jacking in with a clojurescript buffer
 
-(defun repls-with-cljs-prompt (repl-type)
-  (interactive "scljs repl type: ")
-  (setq cider-cljs-repl (gethash repl-type cljs-repls))
+(defun repls-with-cljs-prompt ()
+  (interactive)
+  (setq cider-cljs-repl (gethash (first (helm :sources '(cljs-repl-keys))) cljs-repls))
   (cider-jack-in-clojurescript))
 
 ;; cant use piggieback and watch for file changes :(
@@ -36,20 +49,36 @@
 ;; so this stuff is a hack to get the ambly repl to reload
 ;; a user defined main namespace
 
+(defun safe-command (clj-expr)
+  (goto-char (point-max))
+  (insert clj-expr)
+  (goto-char (point-max))
+  (cider-repl-return)
+  (sit-for 1))
+
 (defun relaunch-simulator (repl-type)
   (interactive "sreboot into which cljs repl: ")
   (save-window-excursion
     (shell-command "killall Simulator")
     (async-shell-command "/Users/johannbestowrous/rfz/debtapp/app/mobilescripts/devtime \"iPhone 6\" \"8.4\""))
   (with-current-buffer (cider-current-repl-buffer)
+
     (goto-char (point-max))
-    (insert ":cljs/quit")
-    (goto-char (point-max))
+    (insert "(ra/stop-autobuild)")
     (cider-repl-return)
     (sit-for 1)
     (goto-char (point-max))
-    (insert (gethash repl-type cljs-repls))
-    (cider-repl-return)))
+    (insert "(ra/stop-figwheel!)")
+    (cider-repl-return)
+    ))
+
+(defun restart-figwheel ()
+  (interactive)
+  (with-current-buffer (cider-current-repl-buffer)
+    (safe-command ":cljs/quit")
+    (safe-command "(ra/stop-autobuild)")
+    (safe-command "(ra/stop-figwheel!)")
+    (safe-command "(repl-start-dev :rfz-rn [:ios])")))
 
 (defun reload-main-ns ()
   (interactive)
