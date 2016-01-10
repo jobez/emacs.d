@@ -5,7 +5,6 @@
   (interactive "srfz-search: ")
   (grep (format "%s %s" "~/bin/rfzsearch" x)))
 
-
 (defun rfzsearch-with-symbol-at-point ()
   (interactive)
   (grep (format "%s %s" "~/bin/rfzsearch" (symbol-at-point))))
@@ -15,11 +14,14 @@
 
 (defun rfz-cljs (build-name)
   (interactive "srfz build?: ")
+  (with-current-buffer (format "*cljsbuild* %s" build-name)
+    (kill-buffer))
   (save-window-excursion
     (let ((default-directory "~/rfz/debtapp/app/"))
       (async-shell-command (format  "lein rfz cljs %s auto" build-name))))
   (with-current-buffer "*Async Shell Command*"
     (rename-buffer (format "*cljsbuild* %s" build-name))))
+
 
 (define-minor-mode rfz-mode
   "RFZ stuff"
