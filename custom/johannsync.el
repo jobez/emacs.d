@@ -10,34 +10,27 @@
           (push buf minor-mode-buffers))))))
 
 
-(defun johannsave ()
+(defun johannsave (path)
   (dolist (buffer (get-buffers-with-minor-mode 'johannsync))
-    (with-current-buffer (find-file-noselect (concat "~/.brilliant-buffers/"
+    (with-current-buffer (find-file-noselect (concat path
                                                      (buffer-name buffer)
                                                      ".org"))
-      (when (not (= (md5 buffer)
-                    (save-excursion
-                      (forward-line -1)
-                      (buffer-substring-no-properties (point)
-                                                      (line-end-position)))))
-        (message "buffer modified i guess")
-        (goto-char (point-max))
-        (insert (concat "* " (current-time-string)))
-        (newline)
-        (insert (md5 buffer))
+      (when (not (string= (md5 buffer)
+                          (save-excursion
+                            (progn (end-of-buffer)
+                                   (forward-line -1))
+                            (buffer-substring-no-properties (point)
+                                                            (line-end-position)))))
         (save-excursion
+          (end-of-buffer)
+          (insert (concat "* " (current-time-string)))
+          (newline)
           (insert-buffer buffer))
+        (end-of-buffer)
+        (newline 2)
+        (insert (md5 buffer))
         (save-buffer)
         (message "great thoughts preserved")))))
 
-
-
-(define-minor-mode johannsync
-  "when i have hotflashes of brilliance in a buffer and i want to sync it for safe keeping"
-  :lighter "syncy syncy"
-  :syn
-  :keymap (let ((kmap (make-sparse-keymap)))
-            (define-key kmap (kbd "C-c j r")
-              #'remove-from-sync-registry)
-            kmap)
-  (run-with-idle-timer 30 t #'johannsave))
+(defun killtimer ()
+  (cancel-function-timers 'johannsave))
