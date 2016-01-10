@@ -14,6 +14,7 @@
 
 ;; customs
 (load "general.el")
+(load "tex_settings.el")
 (load "helmcustoms.el")
 (load "clojure.el")
 (load "clojurescript.el")
@@ -42,9 +43,7 @@
 (defun live-paredit-delete-horizontal-space ()
   (interactive)
   (just-one-space -1)
-  (while (ignore-errors (paredit-forward-up) t))
-  (backward-char)
-  (live-paredit-delete-horizontal-space))
+  (paredit-backward-delete))
 
 (define-key paredit-mode-map (kbd "s-\\") 'live-paredit-delete-horizontal-space)
 
