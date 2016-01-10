@@ -133,4 +133,5 @@
                             (cider-insert-eval-handler cur-buffer))))
 
 (add-hook 'cider-mode-hook (lambda ()
-                             (local-set-key (kbd "H-x") #'cider-eval-last-sexp-and-append)))
+                             (local-set-key (kbd "H-x") #'cider-eval-last-sexp-and-append)
+                             (local-set-key (kbd "H-w") #'cider-macroexpand-expr-inplace)))

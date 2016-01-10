@@ -129,6 +129,3 @@
 
 (add-hook 'rfz-mode-hook (lambda ()
                              (local-set-key (kbd "H-/") #'save-and-reload-ns)))
-
-(add-hook 'rfz-mode-hook (lambda ()
-                             (local-set-key (kbd "H-(") #'relaunch-simulator)))

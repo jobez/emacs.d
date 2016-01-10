@@ -8,9 +8,9 @@
 (require 'pallet)
 (pallet-mode t)
 
-(add-to-list 'load-path "~/.emacs.d/lib")
-(add-to-list 'load-path "~/.emacs.d/custom")
-(add-to-list 'load-path "~/.emacs.d/custom/packages")
+(let ((default-directory  "~/.emacs.d/custom/"))
+  (normal-top-level-add-to-load-path '("."))
+  (normal-top-level-add-subdirs-to-load-path))
 
 ;; customs
 (load "general.el")
@@ -24,6 +24,11 @@
 (load "rfz.el")
 (load "web-markup.el")
 (load "commonlisp.el")
+(load "johannsync.el")
+;; the lab
+(load "lab.el")
+
+
 
 ;; packages
 (load "js.el")
@@ -39,22 +44,3 @@
 
 (setq aw-dispatch-always t)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-
-(defun live-paredit-delete-horizontal-space ()
-  (interactive)
-  (just-one-space -1)
-  (paredit-backward-delete))
-
-(define-key paredit-mode-map (kbd "s-\\") 'live-paredit-delete-horizontal-space)
-
-(defun eval-and-replace ()
-  "Replace the preceding sexp with its value."
-  (interactive)
-  (backward-kill-sexp)
-  (condition-case nil
-      (prin1 (eval (read (current-kill 0)))
-             (current-buffer))
-    (error (message "Invalid expression")
-           (insert (current-kill 0)))))
-
-(global-set-key (kbd "s-z") 'eval-and-replace)
