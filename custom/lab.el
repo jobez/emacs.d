@@ -32,3 +32,23 @@
 (setq aw-dispatch-always t)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 (require 'epa-file)
+
+(defun eshell/clear ()
+  "Clear the eshell buffer."
+  (let ((inhibit-read-only t))
+    (erase-buffer)
+    (eshell-send-input)))
+
+(defun eshell-brace-expansion (str)
+  (let* ((parts (split-string str "[{}]"))
+         (prefix (car parts))
+         (body   (nth 1 parts))
+         (suffix (nth 2 parts)))
+    (mapcar (lambda (x) (concat prefix x suffix))
+            (split-string body ","))))
+
+(defun jhnfind (file-ext expr)
+  (interactive s)
+  )
+
+;; find ../ -name "*.clj" -exec grep -nr "defpage-logged" {} ";" > #<buffer defpage>
