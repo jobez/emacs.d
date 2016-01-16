@@ -83,6 +83,7 @@
 (depends-on "nginx-mode")
 (depends-on "nodejs-repl")
 (depends-on "noflet")
+(depends-on "org-dashboard")
 (depends-on "org-pomodoro")
 (depends-on "org-present")
 (depends-on "package-build")
