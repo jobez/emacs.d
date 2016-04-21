@@ -32,6 +32,7 @@
 
 ;; packages
 (load "js.el")
+(load "scribble.el")
 
 ;;key stuff
 (setq ns-function-modifier 'hyper)

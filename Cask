@@ -43,6 +43,7 @@
 (depends-on "flymake-cursor")
 (depends-on "flymake-easy")
 (depends-on "flymake-jshint")
+(depends-on "flymake-yaml")
 (depends-on "fountain-mode")
 (depends-on "gist")
 (depends-on "gntp")
