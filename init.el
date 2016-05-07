@@ -32,15 +32,3 @@
 
 ;; packages
 (load "js.el")
-
-;;key stuff
-(setq ns-function-modifier 'hyper)
-(setq mac-option-modifier 'super)
-(setq mac-command-modifier 'meta)
-
-(global-set-key (kbd "s-.") 'avy-goto-word-or-subword-1)
-(global-set-key (kbd "s-p") 'ace-window)
-
-
-(setq aw-dispatch-always t)
-(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))

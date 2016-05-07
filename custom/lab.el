@@ -12,8 +12,6 @@
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
 
-
-
 (global-set-key (kbd "s-z") 'eval-and-replace)
 (global-set-key (kbd "C-M-,") 'helm-occur)
 
@@ -52,3 +50,14 @@
   )
 
 ;; find ../ -name "*.clj" -exec grep -nr "defpage-logged" {} ";" > #<buffer defpage>
+
+(add-hook 'scheme-mode-hook 'geiser-mode)
+(setq geiser-default-implementation 'racket)
+
+;;key stuff
+(global-set-key (kbd "s-.") 'avy-goto-word-or-subword-1)
+(global-set-key (kbd "s-p") 'ace-window)
+
+
+(setq aw-dispatch-always t)
+(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))

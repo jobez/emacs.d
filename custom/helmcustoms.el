@@ -30,3 +30,5 @@
 (helm-autoresize-mode 1)
 
 (helm-mode 1)
+
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
