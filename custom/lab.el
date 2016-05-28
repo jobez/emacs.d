@@ -61,3 +61,8 @@
 
 (setq aw-dispatch-always t)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+
+
+(setq tramp-bkup-backup-directory-info bkup-backup-directory-info)
+
+(setq tramp-backup-directory-alist backup-directory-alist)
