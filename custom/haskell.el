@@ -11,8 +11,8 @@
 (add-hook 'haskell-mode-hook #'hident-mode)
 
 (setq haskell-process-log t)
-(setq haskell-process-type 'cabal-repl)
-
+(custom-set-variables '(haskell-process-type 'stack-ghci)
+                      '(haskell-process-type 'chosen-process-type))
 
 (let ((my-cabal-path (expand-file-name "~/.cabal/bin")))
   (setenv "PATH" (concat my-cabal-path ":" (getenv "PATH")))

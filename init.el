@@ -27,6 +27,7 @@
 (load "purescript.el")
 ;; the lab
 (load "lab.el")
+(load "cust-exwm.el")
 
 
 

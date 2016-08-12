@@ -8,6 +8,7 @@
    (dot . t)
    (sh . t)
    (python . t)
+   (haskell . t)
    (ditaa . t)
    (perl . t)
    (gnuplot t)))

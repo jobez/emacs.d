@@ -45,18 +45,12 @@
     (mapcar (lambda (x) (concat prefix x suffix))
             (split-string body ","))))
 
-(defun jhnfind (file-ext expr)
-  (interactive s)
-  )
-
-;; find ../ -name "*.clj" -exec grep -nr "defpage-logged" {} ";" > #<buffer defpage>
-
 (add-hook 'scheme-mode-hook 'geiser-mode)
 (setq geiser-default-implementation 'racket)
 
 ;;key stuff
 (global-set-key (kbd "s-.") 'avy-goto-word-or-subword-1)
-(global-set-key (kbd "s-p") 'ace-window)
+(global-set-key (kbd "s-,") 'ace-window)
 
 
 (setq aw-dispatch-always t)
@@ -66,3 +60,15 @@
 (setq tramp-bkup-backup-directory-info bkup-backup-directory-info)
 
 (setq tramp-backup-directory-alist backup-directory-alist)
+
+(defun comint-clear-buffer ()
+  (interactive)
+  (let ((comint-buffer-maximum-size 0))
+    (comint-truncate-buffer)))
+
+
+(eval-after-load "comint"
+  '(define-key comint-mode-map "\C-c\M-o" #'comint-clear-buffer))
+
+;;(require 'edit-server)
+;;(edit-server-start)

@@ -176,5 +176,3 @@
 (add-to-list 'auto-mode-alist '("\\.fountain$" . fountain-mode))
 
 (global-set-key (kbd "C-x g") 'magit-status)
-
-(menu-bar-mode -1)
