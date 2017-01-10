@@ -77,6 +77,8 @@
 (add-hook 'clojure-mode-hook 'cider-mode)
 (add-hook 'cider-mode-hook 'eldoc-mode)
 
+(setq cider-default-repl-command "boot")
+
 (setq nrepl-hide-special-buffers nil)
 (setq cider-repl-pop-to-buffer-on-connect t)
 
@@ -128,7 +130,7 @@
   (let* ((cur-buffer (current-buffer))
          (last-sexp (cider-last-sexp)))
     (with-current-buffer cur-buffer
-      (insert " => "))
+      (insert " ;;=> "))
     (cider-interactive-eval last-sexp
                             (cider-insert-eval-handler cur-buffer))))
 

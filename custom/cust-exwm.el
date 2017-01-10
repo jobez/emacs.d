@@ -1,6 +1,11 @@
 ;; exwm stuff
-;; Shrink fringes to 1 pixel
-(fringe-mode 1)
+
+(fringe-mode 0)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+
+
 
 (setq display-time-default-load-average nil)
 (display-time-mode t)
@@ -33,6 +38,7 @@
             (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
                         (string= "gimp" exwm-instance-name))
               (exwm-workspace-rename-buffer exwm-class-name))))
+
 (add-hook 'exwm-update-title-hook
           (lambda ()
             (when (or (not exwm-instance-name)
@@ -42,17 +48,23 @@
 
 ;; The following example demonstrates how to set a key binding only available
 ;; in line mode. It's simply done by first push the prefix key to
-;; `exwm-input-prefix-keys' and then add the key sequence to `exwm-mode-map'.
+;; `exwm-input-prefix-keys' and then afdd the key sequence to `exwm-mode-map'.
 ;; The example shorten 'C-c q' to 'C-q'.
 (push ?\C-q exwm-input-prefix-keys)
 (define-key exwm-mode-map [?\C-q] #'exwm-input-send-next-key)
+
+(add-hook 'exwm-manage-finish-hook
+          (lambda ()
+            (when (and exwm-class-name
+                       (string= exwm-class-name "XTerm"))
+              (exwm-input-set-local-simulation-keys  '(([?\C-c ?\C-c] . ?\C-c))))))
 
 ;; The following example demonstrates how to use simulation keys to mimic the
 ;; behavior of Emacs. The argument to `exwm-input-set-simulation-keys' is a
 ;; list of cons cells (SRC . DEST), where SRC is the key sequence you press and
 ;; DEST is what EXWM actually sends to application. Note that SRC must be a key
 ;; sequence (of type vector or string), while DEST can also be a single key.
-'(exwm-input-set-simulation-keys
+(exwm-input-set-simulation-keys
  '(([?\C-b] . left)
    ([?\C-f] . right)
    ([?\C-p] . up)
@@ -66,15 +78,14 @@
 
 ;; You can hide the mode-line of floating X windows by uncommenting the
 ;; following lines
-;(add-hook 'exwm-floating-setup-hook #'exwm-layout-hide-mode-line)
-;(add-hook 'exwm-floating-exit-hook #'exwm-layout-show-mode-line)
+(add-hook 'exwm-floating-setup-hook #'exwm-layout-hide-mode-line)
+(add-hook 'exwm-floating-exit-hook #'exwm-layout-show-mode-line)
 
 ;; You can hide the minibuffer and echo area when they're not used, by
 ;; uncommenting the following line
 (setq exwm-workspace-minibuffer-position 'bottom)
 
 ;; Do not forget to enable EXWM. It will start by itself when things are ready.
-(exwm-enable)
 (require 'exwm-systemtray)
 (exwm-systemtray-enable)
 
@@ -107,7 +118,11 @@
 
 (defun full-screenshot ()
   (interactive)
-  (shell-command "import -screen png:- | imgur up -&"))
+  (shell-command "imgur-screenshot&"))
+
+(defun launch-xterm ()
+  (interactive)
+  (shell-command "xterm&"))
 
 (defun gifgrab ()
   (interactive)
@@ -115,12 +130,18 @@
 
 (defun select-screenshot ()
   (interactive)
-  (shell-command "import png:- | imgur up -&"))
+  (shell-command "imgur-screenshot&"))
 
 (exwm-input-set-key (kbd "s-<print>") 'full-screenshot)
+
+(exwm-input-set-key (kbd "s-t") 'eshell)
+
+(exwm-input-set-key (kbd "C-s-t") 'launch-xterm)
 
 (exwm-input-set-key (kbd "C-s-<print>") 'select-screenshot)
 
 (exwm-input-set-key (kbd "C-s-<insert>") 'gifgrab)
 
 (add-to-list 'display-buffer-alist '("^*Async Shell Command*" . (display-buffer-no-window)))
+
+(exwm-enable)

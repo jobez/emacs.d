@@ -1,5 +1,4 @@
 ;; tentative configs
-
 (define-key paredit-mode-map (kbd "s-\\") 'delete-indentation)
 
 (defun eval-and-replace ()
@@ -15,8 +14,7 @@
 (global-set-key (kbd "s-z") 'eval-and-replace)
 (global-set-key (kbd "C-M-,") 'helm-occur)
 
-(require 'helm-descbinds)
-(helm-descbinds-mode)
+
 
 ;;key stuff
 (setq ns-function-modifier 'hyper)
@@ -30,12 +28,6 @@
 (setq aw-dispatch-always t)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 (require 'epa-file)
-
-(defun eshell/clear ()
-  "Clear the eshell buffer."
-  (let ((inhibit-read-only t))
-    (erase-buffer)
-    (eshell-send-input)))
 
 (defun eshell-brace-expansion (str)
   (let* ((parts (split-string str "[{}]"))
@@ -70,5 +62,18 @@
 (eval-after-load "comint"
   '(define-key comint-mode-map "\C-c\M-o" #'comint-clear-buffer))
 
-;;(require 'edit-server)
-;;(edit-server-start)
+(set-register ?m (cons 'file "~/orgs/main.org"))
+(setq org-default-notes-file "~/orgs/main.org")
+(setq geiser-guile-load-path '("." "/home/jmsb/exps/mlearn/atomspace/build/release/share/opencog/scm" "/home/jmsb/exps/mlearn/atomspace/build/release/include/opencog/guile"))
+
+(setq geiser-guile-load-init-file-p t)
+(setq geiser-guile-binary '("guile"))
+
+(eval-after-load "geiser-impl"
+  '(add-to-list 'geiser-implementations-alist
+                '((dir "/home/jmsb/exps/mlearn/atomspace") guile)))
+
+(setq load-path (append (list "/nix/store/1aqpgv118bhylq8b8q92wy5nvzi4dmzz-lilypond-2.18.2/share/emacs/site-lisp") load-path))
+(autoload 'LilyPond-mode "lilypond-mode")
+(setq auto-mode-alist
+(cons '("\\.ly$" . LilyPond-mode) auto-mode-alist))

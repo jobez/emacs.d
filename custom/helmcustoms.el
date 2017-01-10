@@ -32,3 +32,12 @@
 (helm-mode 1)
 
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "C-x b") 'helm-mini)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+
+(setq helm-M-x-fuzzy-match nil
+      helm-buffers-fuzzy-matching nil
+      helm-recentf-fuzzy-match nil)
+
+(require 'helm-descbinds)
+(helm-descbinds-mode)

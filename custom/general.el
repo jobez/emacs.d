@@ -1,15 +1,14 @@
 ;; appearance
 
 (setq sml/no-confirm-load-theme t)
-(load-theme 'zenburn t)
-(require 'smart-mode-line)
+(load-theme 'grandshell t)
 (sml/setup)
-(sml/apply-theme 'powerline)
+
+
 
 (global-undo-tree-mode)
 (set-frame-parameter nil 'unsplittable t)
 
-(tool-bar-mode 0)
 (global-visual-line-mode t)
 
 ;; indentation
@@ -130,7 +129,7 @@
 ;; OS X specific configuration
 ;; ---------------------------
 
-(setq default-input-method "MacOSX")
+;;(setq default-input-method "MacOSX")
 
 ;; Make cut and paste work with the OS X clipboard
 
