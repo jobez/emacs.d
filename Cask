@@ -99,6 +99,7 @@
 (depends-on "pkg-info")
 (depends-on "popup")
 (depends-on "powerline")
+(depends-on "powershell")
 (depends-on "prodigy")
 (depends-on "project-explorer")
 (depends-on "projectile")
