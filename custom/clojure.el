@@ -6,9 +6,7 @@
 (require 'clojure-mode-extra-font-locking)
 (require 'cider)
 
-(setq auto-mode-alist (append '(("\\.cljs$" . clojure-mode)
-                                ("\\.cljx$" . clojure-mode)
-                                ("\\.boot$" . clojure-mode)
+(setq auto-mode-alist (append '(("\\.boot$" . clojure-mode)
                                 ("\\.edn$" . clojure-mode)
                                 ("\\.dtm$" . clojure-mode))
                               auto-mode-alist))
@@ -133,6 +131,11 @@
       (insert " ;;=> "))
     (cider-interactive-eval last-sexp
                             (cider-insert-eval-handler cur-buffer))))
+
+(defun inf-clojure-socket (host port)
+  (interactive (list (read-string "Host: " nil nil "localhost" nil)
+                     (read-number "Port: " 5555)))
+  (inf-clojure (cons host port)))
 
 (add-hook 'cider-mode-hook (lambda ()
                              (local-set-key (kbd "H-x") #'cider-eval-last-sexp-and-append)

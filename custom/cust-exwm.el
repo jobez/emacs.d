@@ -12,12 +12,10 @@
 (display-battery-mode t)
 (menu-bar-mode -1)
 
-(server-start)
-
 (require 'exwm)
 (require 'counsel)
 ;; Set the initial number of workspaces.
-(setq exwm-workspace-number 4)
+(setq exwm-workspace-number 10)
 
 ;; All buffers created in EXWM mode are named "*EXWM*". You may want to change
 ;; it in `exwm-update-class-hook' and `exwm-update-title-hook', which are run
@@ -120,6 +118,10 @@
   (interactive)
   (shell-command "imgur-screenshot&"))
 
+;; (defun emacs-everywhere ()
+;;   (interactive)
+;;   (shell-command "~/.emacs_anywhere/bin/run"))
+
 (defun launch-xterm ()
   (interactive)
   (shell-command "xterm&"))
@@ -138,6 +140,10 @@
 
 (exwm-input-set-key (kbd "C-s-t") 'launch-xterm)
 
+;; (exwm-input-set-key (kbd "C-s-c") 'emacs-everywhere)
+
+(use-package exwm-edit)
+
 (exwm-input-set-key (kbd "C-s-<print>") 'select-screenshot)
 
 (exwm-input-set-key (kbd "C-s-<insert>") 'gifgrab)
@@ -145,3 +151,5 @@
 (add-to-list 'display-buffer-alist '("^*Async Shell Command*" . (display-buffer-no-window)))
 
 (exwm-enable)
+
+(server-start)

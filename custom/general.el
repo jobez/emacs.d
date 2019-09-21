@@ -1,10 +1,8 @@
 ;; appearance
 
 (setq sml/no-confirm-load-theme t)
-(load-theme 'grandshell t)
+(load-theme 'zenburn t)
 (sml/setup)
-
-
 
 (global-undo-tree-mode)
 (set-frame-parameter nil 'unsplittable t)
@@ -110,7 +108,7 @@
       savehist-file (concat live-tmp-dir "savehist"))
 (savehist-mode t)
 
-(load "backup-dir.el")
+(load "/home/jmsb/.emacs.d/custom/lib/backup-dir.el")
 (require 'backup-dir)
 (make-variable-buffer-local 'backup-inhibited)
 (setq bkup-backup-directory-info
@@ -125,31 +123,6 @@
       kept-new-versions 6
       kept-old-versions 2
       version-control t)
-
-;; OS X specific configuration
-;; ---------------------------
-
-;;(setq default-input-method "MacOSX")
-
-;; Make cut and paste work with the OS X clipboard
-
-(defun live-copy-from-osx ()
-  (shell-command-to-string "pbpaste"))
-
-(defun live-paste-to-osx (text &optional push)
-  (let ((process-connection-type nil))
-    (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
-      (process-send-string proc text)
-      (process-send-eof proc))))
-
-(when (not window-system)
-  (setq interprogram-cut-function 'live-paste-to-osx)
-  (setq interprogram-paste-function 'live-copy-from-osx))
-
-;; Work around a bug on OS X where system-name is a fully qualified
-;; domain name
-(setq system-name (car (split-string system-name "\\.")))
-
 ;; Ensure the exec-path honours the shell PATH
 (require 'exec-path-from-shell)
 (exec-path-from-shell-initialize)

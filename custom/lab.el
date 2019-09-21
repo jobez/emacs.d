@@ -1,6 +1,10 @@
 ;; tentative configs
 (define-key paredit-mode-map (kbd "s-\\") 'delete-indentation)
 
+(add-to-list 'load-path "/nix/store/a9hx1clz9q421g173qf9djh762wmaq0m-emacs-libvterm-unstable-2019-07-22/share/emacs/site-lisp/")
+
+(require 'vterm)
+
 (defun eval-and-replace ()
   "Replace the preceding sexp with its value."
   (interactive)
@@ -13,7 +17,7 @@
 
 (global-set-key (kbd "s-z") 'eval-and-replace)
 (global-set-key (kbd "C-M-,") 'helm-occur)
-
+(global-set-key (kbd "M-l") (lambda () (interactive) (insert (make-char 'greek-iso8859-7 107))))
 
 
 ;;key stuff
@@ -21,33 +25,20 @@
 (setq mac-option-modifier 'super)
 (setq mac-command-modifier 'meta)
 
-(global-set-key (kbd "s-.") 'avy-goto-word-or-subword-1)
-(global-set-key (kbd "s-p") 'ace-window)
 
-
-(setq aw-dispatch-always t)
-(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-(require 'epa-file)
-
-(defun eshell-brace-expansion (str)
-  (let* ((parts (split-string str "[{}]"))
-         (prefix (car parts))
-         (body   (nth 1 parts))
-         (suffix (nth 2 parts)))
-    (mapcar (lambda (x) (concat prefix x suffix))
-            (split-string body ","))))
 
 (add-hook 'scheme-mode-hook 'geiser-mode)
 (setq geiser-default-implementation 'racket)
 
 ;;key stuff
 (global-set-key (kbd "s-.") 'avy-goto-word-or-subword-1)
+(global-set-key (kbd "s-/") 'avy-pop-mark)
 (global-set-key (kbd "s-,") 'ace-window)
 
 
 (setq aw-dispatch-always t)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-
+(require 'tramp)
 
 (setq tramp-bkup-backup-directory-info bkup-backup-directory-info)
 
@@ -58,22 +49,64 @@
   (let ((comint-buffer-maximum-size 0))
     (comint-truncate-buffer)))
 
-
 (eval-after-load "comint"
   '(define-key comint-mode-map "\C-c\M-o" #'comint-clear-buffer))
 
-(set-register ?m (cons 'file "~/orgs/main.org"))
-(setq org-default-notes-file "~/orgs/main.org")
-(setq geiser-guile-load-path '("." "/home/jmsb/exps/mlearn/atomspace/build/release/share/opencog/scm" "/home/jmsb/exps/mlearn/atomspace/build/release/include/opencog/guile"))
+;; (setq geiser-guile-load-path '("." "/home/jmsb/exps/mlearn/atomspace/build/release/share/opencog/scm" "/home/jmsb/exps/mlearn/atomspace/build/release/include/opencog/guile"))
 
-(setq geiser-guile-load-init-file-p t)
-(setq geiser-guile-binary '("guile"))
+;; (setq geiser-guile-load-init-file-p t)
+;; (setq geiser-guile-binary '("guile"))
 
-(eval-after-load "geiser-impl"
-  '(add-to-list 'geiser-implementations-alist
-                '((dir "/home/jmsb/exps/mlearn/atomspace") guile)))
+;; (eval-after-load "geiser-impl"
+;;   '(add-to-list 'geiser-implementations-alist
+;;                 '((dir "/home/jmsb/exps/mlearn/atomspace") guile)))
 
-(setq load-path (append (list "/nix/store/1aqpgv118bhylq8b8q92wy5nvzi4dmzz-lilypond-2.18.2/share/emacs/site-lisp") load-path))
-(autoload 'LilyPond-mode "lilypond-mode")
-(setq auto-mode-alist
-(cons '("\\.ly$" . LilyPond-mode) auto-mode-alist))
+;; (setq load-path (append (list "/nix/store/1aqpgv118bhylq8b8q92wy5nvzi4dmzz-lilypond-2.18.2/share/emacs/site-lisp") load-path))
+;; (autoload 'LilyPond-mode "lilypond-mode")
+;; (setq auto-mode-alist
+;;       (cons '("\\.ly$" . LilyPond-mode) auto-mode-alist))
+
+;; (when (window-system)
+;;   (set-default-font "Fira Code"))
+
+;; (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
+;;                (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
+;;                (36 . ".\\(?:>\\)")
+;;                (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
+;;                (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
+;;                (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
+;;                (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
+;;                (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
+;;                (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
+;;                (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
+;;                (48 . ".\\(?:x[a-zA-Z]\\)")
+;;                (58 . ".\\(?:::\\|[:=]\\)")
+;;                (59 . ".\\(?:;;\\|;\\)")
+;;                (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
+;;                (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
+;;                (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
+;;                (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
+;;                (91 . ".\\(?:]\\)")
+;;                (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
+;;                (94 . ".\\(?:=\\)")
+;;                (119 . ".\\(?:ww\\)")
+;;                (123 . ".\\(?:-\\)")
+;;                (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
+;;                (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
+;;                )
+;;              ))
+;;   (dolist (char-regexp alist)
+;;     (set-char-table-range composition-function-table (car char-regexp)
+;;                           `([,(cdr char-regexp) 0 font-shape-gstring]))))
+
+
+
+
+(eval-after-load 'autoinsert
+  '(define-auto-insert '("\\.cc.lisp\\'" . "C skeleton")
+     '(> \n
+       (format "%s" '(use-package :cm-ifs))
+       > \n \n
+       (format "%s" `(with-interface
+                      (,(file-name-sans-extension
+                         (file-name-sans-extension (file-name-nondirectory (buffer-file-name))))))))))

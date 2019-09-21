@@ -1,5 +1,8 @@
 (require 'cider)
 
+(setq inf-clojure-generic-cmd "/home/jmsb/exps/langs/lisp/clojure/cljs/planck/planck-c/build/planck -d")
+
+
 (setq cljs-repls (make-hash-table :test 'equal))
 
 (puthash  "browser" "(do (require 'weasel.repl.websocket) (cemerick.piggieback/cljs-repl (weasel.repl.websocket/repl-env :ip \"127.0.0.1\" :port 9001)))"  cljs-repls)
