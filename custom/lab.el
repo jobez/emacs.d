@@ -20,7 +20,7 @@
 (global-set-key (kbd "M-l") (lambda () (interactive) (insert (make-char 'greek-iso8859-7 107))))
 
 
-;;key stuff
+;;;; * key stuff
 (setq ns-function-modifier 'hyper)
 (setq mac-option-modifier 'super)
 (setq mac-command-modifier 'meta)
@@ -110,3 +110,39 @@
        (format "%s" `(with-interface
                       (,(file-name-sans-extension
                          (file-name-sans-extension (file-name-nondirectory (buffer-file-name))))))))))
+
+
+(setq user-full-name "Johann Makram Salib Bestowrous"
+      user-mail-address "johann.bestowrous@gmail.com")
+
+
+(use-package highlight-symbol
+  :bind (("M-p" . highlight-symbol-prev)
+         ("M-n" . highlight-symbol-next)
+         ("M-'" . highlight-symbol-query-replace))
+  :init
+  (defun highlight-symbol-first ()
+    "Jump to the first location of symbol at point."
+    (interactive)
+    (push-mark)
+    (eval
+     `(progn
+        (goto-char (point-min))
+        (search-forward-regexp
+         (rx symbol-start ,(thing-at-point 'symbol) symbol-end)
+         nil t)
+        (beginning-of-thing 'symbol))))
+
+  (defun highlight-symbol-last ()
+    "Jump to the last location of symbol at point."
+    (interactive)
+    (push-mark)
+    (eval
+     `(progn
+        (goto-char (point-max))
+        (search-backward-regexp
+         (rx symbol-start ,(thing-at-point 'symbol) symbol-end)
+         nil t))))
+
+  (bind-keys ("M-P" . highlight-symbol-first)
+             ("M-N" . highlight-symbol-last)))

@@ -1,4 +1,10 @@
-;; appearance
+;;;; startup messages
+
+(setq inhibit-startup-message t
+      initial-scratch-message ""
+      inhibit-startup-echo-area-message t)
+
+;;;; appearance
 
 (setq sml/no-confirm-load-theme t)
 (load-theme 'zenburn t)
@@ -9,7 +15,7 @@
 
 (global-visual-line-mode t)
 
-;; indentation
+;;;; indentation
 
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
@@ -17,32 +23,34 @@
 (setq c-basic-indent 2)
 (setq c-basic-offset 2)
 
-;; autocomplete
+;;;; autocomplete
 (add-hook 'after-init-hook 'global-company-mode)
 
-;; ffip
+;;;; ffip
 (setq ffip-limit 4096)
 ;; (setq ffip-patterns (append `("*.erb" "*.tpl" "*.php" "*.css" "*.ru" "*.json" "*.rb" "*.sass" "*.scss" "*.clj" "*.cljs") ffip-patterns))
 (setq ffip-full-paths 1)
 
-;;remove bells
+;;;; remove bells
 (setq ring-bell-function 'ignore)
 
 (defvar live-tmp-dir "~/.emacs.d/tmp/")
 (defvar live-autosaves-dir "~/.emacs.d/autosaves/")
 (defvar live-backups-dir "~/.emacs.d/backups/")
 
-;;store history of recently opened files
-(require 'recentf)
-(setq recentf-save-file (concat live-tmp-dir "recentf")
-      recentf-max-saved-items 200)
-(recentf-mode t)
+;;;; store history of recently opened files
+(use-package recentf
+  :bind ("C-x C-r" . counsel-recentf)
+  :init
+  (recentf-mode t)
+  (setq recentf-max-saved-items 200))
 
 ;;When you visit a file, point goes to the last place where it was
 ;;when you previously visited. Save file is set to live-tmp-dir/places
+
 (require 'saveplace)
 (setq-default save-place t)
-(setq save-place-file (concat live-tmp-dir "places"))
+(setq save-place-file (expand-file-name ".places" user-emacs-directory))
 
 ;;enable winner mode for C-c-(<left>|<right>) to navigate the history
 ;;of buffer changes i.e. undo a split screen
@@ -53,7 +61,7 @@
       redisplay-dont-pause t
       column-number-mode t
       echo-keystrokes 0.02
-      inhibit-startup-message t
+      ;; inhibit-startup-message t
       transient-mark-mode t
       shift-select-mode nil
       require-final-newline t
@@ -64,7 +72,8 @@
       next-error-highlight t
       next-error-highlight-no-select t)
 
-;;set all coding systems to utf-8
+;;;;  set all coding systems to utf-8
+
 (set-language-environment 'utf-8)
 (set-default-coding-systems 'utf-8)
 (setq locale-coding-system 'utf-8)
@@ -72,7 +81,10 @@
 (set-keyboard-coding-system 'utf-8)
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
-;;disable CJK coding/encoding (Chinese/Japanese/Korean characters)
+(setq coding-system-for-read 'utf-8)
+(setq coding-system-for-write 'utf-8)
+
+;;;; disable CJK coding/encoding (Chinese/Japanese/Korean characters)
 (setq utf-translate-cjk-mode nil)
 
 (set-default 'indent-tabs-mode nil)
@@ -81,11 +93,11 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;;default to unified diffs
+;;;; default to unified diffs
 (setq diff-switches "-u"
       ediff-window-setup-function 'ediff-setup-windows-plain)
 
-;; make emacs use the clipboard
+;;;; make emacs use the clipboard
 (setq x-select-enable-clipboard t)
 
 ;;remove all trailing whitespace and trailing blank lines before

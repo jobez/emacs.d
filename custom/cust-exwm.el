@@ -1,16 +1,16 @@
 ;; exwm stuff
 
 (fringe-mode 0)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
 
-
+(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
 
 (setq display-time-default-load-average nil)
 (display-time-mode t)
 (display-battery-mode t)
-(menu-bar-mode -1)
+
 
 (require 'exwm)
 (require 'counsel)

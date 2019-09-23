@@ -119,6 +119,7 @@
 (depends-on "helm-recoll")
 (depends-on "hi2")
 (depends-on "highlight")
+(depends-on "highlight-symbol")
 (depends-on "hindent")
 (depends-on "hlint-refactor")
 (depends-on "ht")
