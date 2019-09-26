@@ -184,6 +184,7 @@
 (depends-on "ob-prolog")
 (depends-on "org")
 (depends-on "org-attach-screenshot")
+(depends-on "org-brain")
 (depends-on "org-category-capture")
 (depends-on "org-dashboard")
 (depends-on "org-download")
