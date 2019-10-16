@@ -6,8 +6,8 @@
 (setq inferior-lisp-program "sbcl-media")
 (global-set-key "\C-cs" 'slime-selector)
 
-(add-to-list 'load-path "/home/jmsb/exps/langs/lisp/common/web/css/LASS/")
-(require 'lass)
+;; (add-to-list 'load-path "/home/jmsb/exps/langs/lisp/common/web/css/LASS/")
+;; (require 'lass)
 
 (require 'cl)
 ;; https://www.reddit.com/r/lisp/comments/5osi1d/dont_loop_iterate_the_iterate_manual/dclzg24/
@@ -105,10 +105,10 @@
 (add-hook 'slime-inferior-process-start-hook #'emacs-forget-buffer-process)
 (add-hook 'slime-repl-mode-hook #'emacs-forget-buffer-process)
 
-(load "~/quicklisp/log4slime-setup.el")
-(global-log4slime-mode 1)
+;; (load "~/quicklisp/log4slime-setup.el")
+;; (global-log4slime-mode 1)
 ;; (load  "~/exps/langs/lisp/common/overlord/overlord/elisp/overlord.el")
-(load  "~/exps/langs/lisp/common/compilec/c-mera/util/emacs/cm-mode.el")
+;; (load  "~/exps/langs/lisp/common/compilec/c-mera/util/emacs/cm-mode.el")
 
 
 
