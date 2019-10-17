@@ -67,16 +67,16 @@
 
 (use-package shen-mode)
 
-(require 'ejc-sql)
+;; (require 'ejc-sql)
 
-(ejc-create-connection
- "yes"
- :classpath (concat "~/.m2/repository/org/postgresql/postgresql/42.2.7/"
-                    "postgresql-42.2.7.jar")
- :subprotocol "postgresql"
- :subname "//localhost:5432/yes"
- :user "yessir"
- :password "yessir")
+;; (ejc-create-connection
+;;  "yes"
+;;  :classpath (concat "~/.m2/repository/org/postgresql/postgresql/42.2.7/"
+;;                     "postgresql-42.2.7.jar")
+;;  :subprotocol "postgresql"
+;;  :subname "//localhost:5432/yes"
+;;  :user "yessir"
+;;  :password "yessir")
 
 
 ;; (use-package inferior-shen)
