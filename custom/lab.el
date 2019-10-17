@@ -3,7 +3,8 @@
 
 (add-to-list 'load-path "/nix/store/a9hx1clz9q421g173qf9djh762wmaq0m-emacs-libvterm-unstable-2019-07-22/share/emacs/site-lisp/")
 
-(require 'vterm)
+(use-package vterm)
+
 
 (defun eval-and-replace ()
   "Replace the preceding sexp with its value."
