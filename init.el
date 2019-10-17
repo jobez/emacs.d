@@ -29,7 +29,7 @@
          "dev")
 (customs "general"
          "dev"
-         "cust-exwm"
+         ;; "cust-exwm"
          "tex_settings"
          "navigation"
          "clojure"
