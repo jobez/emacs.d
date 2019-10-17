@@ -26,7 +26,7 @@
          "commonlisp"
          ;; "reason"
          "general"
-	 "dev")
+         "dev")
 (customs "general"
          "dev"
          "cust-exwm"

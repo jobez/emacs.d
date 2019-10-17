@@ -9,7 +9,8 @@
 
 (setq display-time-default-load-average nil)
 (display-time-mode t)
-(display-battery-mode t)
+
+;; (display-battery-mode t)
 
 
 (require 'exwm)
