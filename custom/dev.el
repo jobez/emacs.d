@@ -53,17 +53,17 @@
   :config
   (setq sclang-program "sclang"))
 
-(use-package pdf-tools
-  :magic ("%PDF" . pdf-view-mode)
-  :defer t
-  :config
-  ;; If pdf-tools is installed using emacsWithPackage in nix, then the
-  ;; `epdfinfo` binary is installed alongside the elisp package.
-  (setq pdf-info-epdfinfo-program
-        (concat (file-name-directory (locate-library "pdf-tools"))
-                "epdfinfo")
-        pdf-info-epdfinfo-error-filename nil)
-  (pdf-tools-install))
+;; (use-package pdf-tools
+;;   :magic ("%PDF" . pdf-view-mode)
+;;   :defer t
+;;   :config
+;;   ;; If pdf-tools is installed using emacsWithPackage in nix, then the
+;;   ;; `epdfinfo` binary is installed alongside the elisp package.
+;;   (setq pdf-info-epdfinfo-program
+;;         (concat (file-name-directory (locate-library "pdf-tools"))
+;;                 "epdfinfo")
+;;         pdf-info-epdfinfo-error-filename nil)
+;;   (pdf-tools-install))
 
 (use-package shen-mode)
 
