@@ -39,11 +39,12 @@
 
 (setq aw-dispatch-always t)
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-(require 'tramp)
 
-(setq tramp-bkup-backup-directory-info bkup-backup-directory-info)
+;; (require 'tramp)
 
-(setq tramp-backup-directory-alist backup-directory-alist)
+;; (setq tramp-bkup-backup-directory-info bkup-backup-directory-info)
+
+;; (setq tramp-backup-directory-alist backup-directory-alist)
 
 (defun comint-clear-buffer ()
   (interactive)
