@@ -120,11 +120,11 @@
       savehist-file (concat live-tmp-dir "savehist"))
 (savehist-mode t)
 
-(load "/home/jmsb/.emacs.d/custom/lib/backup-dir.el")
-(require 'backup-dir)
-(make-variable-buffer-local 'backup-inhibited)
-(setq bkup-backup-directory-info
-      `((t ,live-backups-dir ok-create full-path prepend-name)))
+;; (load "/home/jmsb/.emacs.d/custom/lib/backup-dir.el")
+;; (require 'backup-dir)
+;; (make-variable-buffer-local 'backup-inhibited)
+;; (setq bkup-backup-directory-info
+;;       `((t ,live-backups-dir ok-create full-path prepend-name)))
 
 (setq auto-save-file-name-transforms `((".*" ,(concat live-autosaves-dir "\\1") t)))
 (setq backup-by-copying t)

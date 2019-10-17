@@ -24,8 +24,9 @@
 
 (customs "orgcustom"
          "commonlisp"
-         "reason"
-         "org-player")
+         ;; "reason"
+         "general"
+	 "dev")
 (customs "general"
          "dev"
          "cust-exwm"
