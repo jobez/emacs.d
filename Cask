@@ -1,3 +1,4 @@
+(source "org" "https://orgmode.org/elpa/")
 (source gnu)
 (source melpa)
 (source org)
@@ -202,6 +203,7 @@
 (depends-on "orgit")
 (depends-on "osc")
 (depends-on "outshine")
+(depends-on "ox-gfm")
 (depends-on "ox-hugo")
 (depends-on "ox-pandoc")
 (depends-on "ox-tufte")
