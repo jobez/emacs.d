@@ -14,7 +14,8 @@
 (require 'pallet)
 (pallet-mode t)
 
- (add-to-list 'package-directory-list "~/.nix-profile/share/emacs/site-lisp/elpa")
+(add-to-list 'package-directory-list "~/.nix-profile/share/emacs/site-lisp/elpa")
+
 
 (defmacro customs (&rest custom-list)
   `(progn
@@ -29,7 +30,7 @@
          "dev")
 (customs "general"
          "dev"
-         "cust-exwm"
+          "cust-exwm"
          "tex_settings"
          "navigation"
          "clojure"
@@ -43,10 +44,21 @@
          "arcadia"
          "schemelisp"
          "picocust"
-         "lab")
+         "lab"
+         "email")
 ;; customs
 
-(find-file "~/orgs/structure/emptyground.org")
+(find-file   "~/orgs/structure/emptyground.org")
+
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+(setq package-check-signature nil)
+
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+
+
 
 ;; packages
 (custom-set-variables
@@ -61,7 +73,7 @@
  '(haskell-process-type (quote chosen-process-type))
  '(package-selected-packages
    (quote
-    (ox-gfm org org-brain highlight-symbol ejc-sql gmail-message-mode orgit polymode bongo org-randomnote dhall-mode ob-hy helm-recoll linguistic org-dp el-get define-word spray org-noter org-mind-map magit exwm-x intero dante anki-editor ob-clojurescript ob-go org-ref shen-elisp org-pdfview pdf-tools inform-mode org-plus-contrib calfw-org ediprolog ob-prolog exwm-edit gpastel outshine direnv helm-bibtex fennel-mode org-download transpose-frame org-attach-screenshot poet-theme forth-mode sclang-snippets sclang-extensions ox-pandoc lua-mode faustine haxe-mode haxe-imports dired-toggle-sudo ox-hugo wc-mode wc-goal-mode org-wc spiral counsel-projectile counsel-css ac-rtags helm scala-mode hierarchy gradle-mode osc autodisass-llvm-bitcode nim-mode utop merlin typescript-mode restclient pacmacs omnisharp csharp-mode axiom-environment ob-async shader-mode rust-mode solidity-mode skewer-less skewer-reload-stylesheets trident-mode ox-tufte idris-mode scribble-mode zenburn-theme zenburn yaml-mode xresources-theme writeroom-mode win-switch web-mode vala-mode undo-tree tuareg tern-auto-complete tagedit systemd sml-mode smex smartparens smart-mode-line-powerline-theme shm shen-mode servant scss-mode scratch sage-shell-mode rvm request rainbow-mode rainbow-delimiters racket-mode quelpa quack python-mode psci psc-ide project-explorer prodigy pallet org-present org-pomodoro org-dashboard noflet nodejs-repl nix-sandbox nix-mode nginx-mode neotree mustache-mode muse moe-theme mode-compile markdown-mode mark-multiple manage-minor-mode macrostep load-dir llvm-mode less-css-mode latex-preview-pane jsx-mode js2-refactor ivy-hydra interleave inf-ruby inf-clojure imgur ido-vertical-mode ido-ubiquitous hyperbole hy-mode httprepl htmlize hlint-refactor hindent hi2 graphviz-dot-mode grandshell-theme google go-mode gist geiser fountain-mode flymake-yaml flymake-jshint flymake-cursor flycheck-pos-tip flycheck-clojure flx-ido find-file-in-project faust-mode extempore-mode expand-region exec-path-from-shell eval-sexp-fu ereader eink-theme edit-server dracula-theme dockerfile-mode djvu deft dash-at-point company-nixos-options company-ghci company-ghc column-marker color-theme-buffer-local color-theme coffee-mode cmake-mode clojure-quick-repls clojure-mode-extra-font-locking clj-refactor bm avy-migemo auctex ag ace-window ace-jump-mode)))
+    (mu4e-overview evil-mu4e org-msg kotlin-mode gist package-lint ov json-rpc ox-tiddly ox-gfm org org-brain highlight-symbol ejc-sql gmail-message-mode orgit polymode bongo org-randomnote dhall-mode ob-hy helm-recoll linguistic org-dp el-get define-word spray org-noter org-mind-map magit exwm-x intero dante anki-editor ob-clojurescript ob-go org-ref shen-elisp org-pdfview pdf-tools inform-mode org-plus-contrib calfw-org ediprolog ob-prolog exwm-edit gpastel outshine direnv helm-bibtex fennel-mode org-download transpose-frame org-attach-screenshot poet-theme forth-mode sclang-snippets sclang-extensions ox-pandoc lua-mode faustine haxe-mode haxe-imports dired-toggle-sudo ox-hugo wc-mode wc-goal-mode org-wc spiral counsel-projectile counsel-css ac-rtags helm scala-mode hierarchy gradle-mode osc autodisass-llvm-bitcode nim-mode utop merlin typescript-mode restclient pacmacs omnisharp csharp-mode axiom-environment ob-async shader-mode rust-mode solidity-mode skewer-less skewer-reload-stylesheets trident-mode ox-tufte idris-mode scribble-mode zenburn-theme zenburn yaml-mode xresources-theme writeroom-mode win-switch web-mode vala-mode undo-tree tuareg tern-auto-complete tagedit systemd sml-mode smex smartparens smart-mode-line-powerline-theme shm shen-mode servant scss-mode scratch sage-shell-mode rvm request rainbow-mode rainbow-delimiters racket-mode quelpa quack python-mode psci psc-ide project-explorer prodigy pallet org-present org-pomodoro org-dashboard noflet nodejs-repl nix-sandbox nix-mode nginx-mode neotree mustache-mode muse moe-theme mode-compile markdown-mode mark-multiple manage-minor-mode macrostep load-dir llvm-mode less-css-mode latex-preview-pane jsx-mode js2-refactor ivy-hydra interleave inf-ruby inf-clojure imgur ido-vertical-mode ido-ubiquitous hyperbole hy-mode httprepl htmlize hlint-refactor hindent hi2 graphviz-dot-mode grandshell-theme google go-mode geiser fountain-mode flymake-yaml flymake-jshint flymake-cursor flycheck-pos-tip flycheck-clojure flx-ido find-file-in-project faust-mode extempore-mode expand-region exec-path-from-shell eval-sexp-fu ereader eink-theme edit-server dracula-theme dockerfile-mode djvu deft dash-at-point company-nixos-options company-ghci company-ghc column-marker color-theme-buffer-local color-theme coffee-mode cmake-mode clojure-quick-repls clojure-mode-extra-font-locking clj-refactor bm avy-migemo auctex ag ace-window ace-jump-mode)))
  '(safe-local-variable-values
    (quote
     ((eval add-hook

@@ -135,11 +135,17 @@
   (interactive)
   (shell-command "imgur-screenshot&"))
 
+(defun systemctl-suspend ()
+  (interactive)
+  (shell-command "systemctl suspend"))
+
 (exwm-input-set-key (kbd "s-<print>") 'full-screenshot)
 
 (exwm-input-set-key (kbd "s-t") 'eshell)
 
 (exwm-input-set-key (kbd "C-s-t") 'launch-xterm)
+
+(exwm-input-set-key (kbd "C-s-s") 'systemctl-suspend)
 
 ;; (exwm-input-set-key (kbd "C-s-c") 'emacs-everywhere)
 

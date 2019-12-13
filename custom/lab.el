@@ -148,3 +148,7 @@
 
   (bind-keys ("M-P" . highlight-symbol-first)
              ("M-N" . highlight-symbol-last)))
+
+(add-to-list 'load-path "~/exps/langs/lisp/clojure/scratch/exo/orgexploration/src/elisp")
+
+(require 'orgexploration)
