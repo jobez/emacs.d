@@ -162,7 +162,7 @@ See `org-capture-templates' for more information."
                  "\n"))))
 
 (setq org-capture-templates
-      '(("!" "Riffs" entry (file+olp+datetree "~/orgs/structure/refile.org" )
+      '(("!" "Journal" entry (file+olp+datetree "~/orgs/structure/journal/2020.org" )
           "* %?\nEntered on %U\n  %i\n  %a")
         ("g" "Daily Goals" entry (file+olp+datetree "~/orgs/surfacings/captainslog.org" "Daily Goals")
          "* %?\nEntered on %U\n  %i\n  %a")
@@ -173,6 +173,7 @@ See `org-capture-templates' for more information."
          entry
          (file+olp "~/orgs/surfacings/blog/blog.org" "Drafts")
          (function org-hugo-new-subtree-post-capture-template))))
+
 
 (setq org-agenda-custom-commands
       '(("f" occur-tree "FIXME")))
