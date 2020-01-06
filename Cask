@@ -186,6 +186,7 @@
 (depends-on "org-drill")
 (depends-on "org-mind-map")
 (depends-on "org-pdfview")
+(depends-on "org-pomodoro")
 (depends-on "osc")
 (depends-on "outshine")
 (depends-on "ox-gfm")

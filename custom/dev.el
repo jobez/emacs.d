@@ -1,8 +1,3 @@
-(use-package direnv
-  :config
-  (setq direnv-always-show-summary nil)
- (direnv-mode))
-
 ;;;; outline mode
 
 
@@ -44,14 +39,6 @@
 
 
 (setq sclang-runtime-directory "/home/jmsb/.local/share/SuperCollider")
-
-(use-package tidal
-  :config
-  (setq tidal-boot-script-path "/home/jmsb/exps/langs/hk/creative/Tidal/BootTidal.hs"))
-
-(use-package sclang
-  :config
-  (setq sclang-program "sclang"))
 
 ;; (use-package pdf-tools
 ;;   :magic ("%PDF" . pdf-view-mode)

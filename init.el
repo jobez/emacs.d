@@ -40,10 +40,11 @@
          "extemporecustom"
          "purescript"
          "cm-mode"
-         "arcadia"
+;;         "arcadia"
          "schemelisp"
          "picocust"
-         "lab")
+         ;; "lab"
+         )
 ;; customs
 
 (menu-bar-mode -1)
