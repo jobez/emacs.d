@@ -70,7 +70,7 @@
    (lisp . t)
    (ditaa . t)
    (perl . t)
-   ;; (c . t)
+   (sparql . t)
    (prolog . t)
    (gnuplot t)))
 
@@ -162,7 +162,7 @@ See `org-capture-templates' for more information."
                  "\n"))))
 
 (setq org-capture-templates
-      '(("!" "Riffs" entry (file+olp+datetree "~/orgs/structure/refile.org" )
+      '(("!" "Journal" entry (file+olp+datetree "~/orgs/structure/journal/2020.org" )
           "* %?\nEntered on %U\n  %i\n  %a")
         ("g" "Daily Goals" entry (file+olp+datetree "~/orgs/surfacings/captainslog.org" "Daily Goals")
          "* %?\nEntered on %U\n  %i\n  %a")
@@ -199,40 +199,6 @@ See `org-capture-templates' for more information."
 (define-key global-map "\C-ca" 'org-agenda)
 
 
-;; (defvar count-words-buffer
-;;   nil
-;;   "*Number of words in the buffer.")
-
-;; (defvar *wc-timer*)
-
-;; (defun wicked/update-wc ()
-;;   (interactive)
-;;   (setq count-words-buffer (number-to-string (count-words-buffer)))
-;;   (force-mode-line-update))
-
-;; ; only setup timer once
-;; (unless count-words-buffer
-;;   ;; seed count-words-paragraph
-;;   ;; create timer to keep count-words-paragraph updated
-;;   (run-with-idle-timer 1 t 'wicked/update-wc))
-
-;; ;; add count words paragraph the mode line
-;; (unless (memq 'count-words-buffer global-mode-string)
-;;   (add-to-list 'global-mode-string "words: " t)
-;;   (add-to-list 'global-mode-string 'count-words-buffer t))
-
-;; ;; count number of words in current paragraph
-;; (defun count-words-buffer ()
-;;   "Count the number of words in the current paragraph."
-;;   (interactive)
-;;   ;; (save-excursion
-;;   ;;   (goto-char (point-min))
-;;   ;;   (let ((count 0))
-;;   ;;     (while (not (eobp))
-;; 	;; (forward-word 1)
-;;   ;;       (setq count (1+ count)))
-;;   ;;     count))
-;;   1)
 
 ;; don't really use this
 (setq org-todo-keywords
@@ -267,3 +233,37 @@ See `org-capture-templates' for more information."
 	(when (interactive-p)
 	  (message "%S" words))
 	words))
+
+
+(defvar *transclude* t "Put overlays on or not")
+
+(setq *transclude* t)
+
+(org-link-set-parameters
+ "transclude"
+ :face '(:background "gray80")
+ :follow (lambda (path)
+           (org-open-link-from-string path))
+ :keymap (let ((map (copy-keymap org-mouse-map)))
+           (define-key map [C-mouse-1] (lambda ()
+                                         (interactive)
+                                         (setq *transclude* (not *transclude*))
+                                         (unless *transclude*
+                                           (ov-clear 'transclude))
+                                         (font-lock-fontify-buffer)))
+           map)
+ :help-echo "Transcluded element. Click to open source. C-mouse-1 to toggle overlay."
+ :activate-func (lambda (start end path bracketp)
+                  (if *transclude*
+                      (let ((ov (make-overlay start end))
+                            el disp)
+                        (ov-put ov 'transclude t)
+                        (save-window-excursion
+                          (org-open-link-from-string path)
+                          (setq el (org-element-context))
+                          (setq disp (buffer-substring
+                                      (org-element-property :begin el)
+                                      (- (org-element-property :end el)
+                                         (or (org-element-property :post-blank el) 0))))
+                          (ov-put ov 'display disp)))
+                    (ov-clear 'transclude 'any start end))))
