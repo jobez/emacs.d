@@ -1,9 +1,27 @@
 ;; tentative configs
 (define-key paredit-mode-map (kbd "s-\\") 'delete-indentation)
 
-(add-to-list 'load-path "/nix/store/a9hx1clz9q421g173qf9djh762wmaq0m-emacs-libvterm-unstable-2019-07-22/share/emacs/site-lisp/")
+;; (add-to-list 'load-path "/nix/store/a9hx1clz9q421g173qf9djh762wmaq0m-emacs-libvterm-unstable-2019-07-22/share/emacs/site-lisp/")
+
+(add-to-list 'load-path "/nix/store/m6mgp4mva269rg0rasprj4r827ibxxxh-emacs-packages-deps/share/emacs/site-lisp/elpa/zmq-20190812.1910"
+)
+
+(add-to-list 'load-path "/nix/store/m6mgp4mva269rg0rasprj4r827ibxxxh-emacs-packages-deps/share/emacs/site-lisp/elpa/jupyter-20191019.1519"
+             )
+
+(add-to-list 'load-path "/nix/store/m6mgp4mva269rg0rasprj4r827ibxxxh-emacs-packages-deps/share/emacs/site-lisp/elpa/vterm-20191025.1349"
+             )
+
+(add-to-list 'load-path "/nix/store/m6mgp4mva269rg0rasprj4r827ibxxxh-emacs-packages-deps/share/emacs/site-lisp/elpa/pdf-tools-20191007.1436"
+)
+
+
 
 (use-package vterm)
+
+(use-package zmq)
+(use-package jupyter)
+
 
 
 (defun eval-and-replace ()
@@ -18,7 +36,7 @@
 
 (global-set-key (kbd "s-z") 'eval-and-replace)
 (global-set-key (kbd "C-M-,") 'helm-occur)
-(global-set-key (kbd "M-l") (lambda () (interactive) (insert (make-char 'greek-iso8859-7 107))))
+;; (global-set-key (kbd "M-l") (lambda () (interactive) (insert (make-char 'greek-iso8859-7 107))))
 
 
 ;;;; * key stuff

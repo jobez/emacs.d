@@ -32,11 +32,11 @@
     (mapcar (lambda (x) (concat prefix x suffix))
             (split-string body ","))))
 
-(setq erc-autojoin-channels-alist
+;; (setq erc-autojoin-channels-alist
 
-      '("freenode.net"
-          "#clasp"
-          "#lispgames"))
+;;       '("freenode.net"
+;;           "#clasp"
+;;           "#lispgames"))
 
 (add-to-list 'load-path "~/exps/langs/hk/creative/Tidal")
 
@@ -67,22 +67,63 @@
 
 (use-package shen-mode)
 
-;; (require 'ejc-sql)
+(use-package om
+  :load-path "~/.emacs.d/elpa/om.el")
 
-;; (ejc-create-connection
-;;  "yes"
-;;  :classpath (concat "~/.m2/repository/org/postgresql/postgresql/42.2.7/"
-;;                     "postgresql-42.2.7.jar")
-;;  :subprotocol "postgresql"
-;;  :subname "//localhost:5432/yes"
-;;  :user "yessir"
-;;  :password "yessir")
+(use-package pymacs
+  :load-path "~/exps/langs/python/Pymacs"
+  :config
+  (setq pymacs-python-command "/nix/store/cl9mwqpwhaqvxrmc78k9g8cj3zpdic13-python3-3.7.6-env/bin/python3.7"))
+
+(add-to-list 'load-path "~/exps/langs/java/smsn/smsn-mode/lisp/lib")
+(add-to-list 'load-path "~/exps/langs/java/smsn/smsn-mode/lisp")
+
+(defun hey-smsn ()
+  (interactive)
+  (let ((vbuff (vterm)))
+    (process-send-string vbuff "cd ~/exps/langs/java/smsn/apache-tinkerpop-gremlin-server-3.2.5/")
+    (process-send-string vbuff "\C-m")
+    (process-send-string vbuff "./bin/gremlin-server.sh conf/jhnn-smsn.yaml")
+    (process-send-string vbuff "\C-m")))
+
+(use-package smsn-mode
+  :config
+  (setq smsn-server-protocol "websocket")
+  ;; use "http" or "websocket"
+  (setq smsn-server-host "localhost")
+  (setq smsn-server-port 8182)
+  (setq smsn-default-graphml-file "~/orgs/structure/smsn.xml"))
+
+(defun export-smsn! ()
+  (interactive)
+  (smsn-write-yaml)
+  (let ((vbuff (vterm)))
+    (process-send-string vbuff "cp -r ~/exps/langs/java/smsn/apache-tinkerpop-gremlin-server-3.2.5/data/sources/private/ ~/orgs/structure/smsn/")
+    (process-send-string vbuff "\C-m")
+    (process-send-string vbuff "exit")
+    (process-send-string vbuff "\C-m")
+    (kill-buffer vbuff)))
 
 
-;; (use-package inferior-shen)
 
-;; (find-file pdf-info-epdfinfo-program)
 
-;; (use-package hyperbole)
 
-;; (setq mode-line-format nil)
+  ;; (require 'ejc-sql)
+
+  ;; (ejc-create-connection
+  ;;  "yes"
+  ;;  :classpath (concat "~/.m2/repository/org/postgresql/postgresql/42.2.7/"
+  ;;                     "postgresql-42.2.7.jar")
+  ;;  :subprotocol "postgresql"
+  ;;  :subname "//localhost:5432/yes"
+  ;;  :user "yessir"
+  ;;  :password "yessir")
+
+
+  ;; (use-package inferior-shen)
+
+  ;; (find-file pdf-info-epdfinfo-program)
+
+  ;; (use-package hyperbole)
+
+  ;; (setq mode-line-format nil)

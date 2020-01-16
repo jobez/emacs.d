@@ -12,7 +12,7 @@
 ;; Update ID file on startup
 (org-id-update-id-locations)
 
-(setq org-ellipsis "⤵")
+;; (setq org-ellipsis "⤵")
 
 (use-package ox-hugo
   :ensure t            ;Auto-install the package from Melpa (optional)
@@ -53,6 +53,8 @@
   (setq org-brain-include-file-entries nil
         org-brain-file-entries-use-title nil))
 
+(add-to-list 'org-src-lang-modes '("jupyter" . python))
+
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
@@ -72,8 +74,11 @@
    (perl . t)
    (sparql . t)
    (prolog . t)
-   (gnuplot t)))
+   (gnuplot . t)
+   ;; (jupyter . t)
+   ))
 
+(add-to-list 'org-src-lang-modes '("jupyter" . python))
 
 
 (require 'ob-async)
@@ -267,3 +272,98 @@ See `org-capture-templates' for more information."
                                          (or (org-element-property :post-blank el) 0))))
                           (ov-put ov 'display disp)))
                     (ov-clear 'transclude 'any start end))))
+
+(org-link-set-parameters
+ "smsn"
+ :face '(:background "magenta")
+ :follow (lambda (path)
+           (smsn-client-open-note path)))
+
+(defface text-clone-overlay-face '((t :background "yellow"))
+  "Face for marking regions to be cloned.")
+
+(defvar-local text-clone-overlay nil
+  "Store for the region to be cloned.")
+
+(defun text-clone-mark-region (b e)
+  "Mark region from B to E for cloning."
+  (interactive "r")
+  (if text-clone-overlay
+      (move-overlay text-clone-overlay b e)
+    (setq text-clone-overlay (make-overlay b e))
+    (overlay-put text-clone-overlay 'face 'text-clone-overlay-face)))
+
+(defun text-clone-copy (point)
+  "Copy the clone overlay region and create text-clone at POINT."
+  (interactive "d")
+  (let ((b (overlay-start text-clone-overlay))
+    (e (overlay-end text-clone-overlay)))
+    (when (and (>= point b)
+           (< point e))
+      (user-error "Point within cloned region"))
+    (let ((str (buffer-substring b e)))
+      (insert str)
+      (save-excursion
+    (goto-char point)
+    (text-clone-create b e)))))
+
+(defvar-local text-clone-list nil
+  "List of text clones in current buffer.")
+
+(defun text-clone-list (&optional begin end)
+  "Get clones in region from begin to end."
+  (let* ((cnt -1)
+     (ols (cl-loop for ol being the overlays
+              if (overlay-get ol 'text-clones)
+              do (overlay-put ol 'text-clone-index (cl-incf cnt))
+              and collect ol))
+     ret)
+    (dolist (ol ols)
+      (setq ret (cons
+         (append
+          (list
+           (overlay-start ol)
+           (overlay-end ol))
+          (mapcar
+           (lambda (clone)
+             (overlay-get clone 'text-clone-index))
+          (overlay-get ol 'text-clones)))
+         ret)))
+    (nreverse ret)))
+
+(defun text-clone-save ()
+  "Add `text-clone-list' as local variable."
+  (save-excursion
+    (add-file-local-variable 'text-clone-list (text-clone-list))))
+
+(defun text-clone-read ()
+  "Create text clones according to `text-clone-list'."
+  (let (clones)
+    (dolist (clone text-clone-list)
+      (let ((ol (make-overlay (car clone) (cadr clone))))
+    (overlay-put ol 'text-clones (nthcdr 2 clone))
+    (setq clones (cons ol clones))))
+    (setq clones (nreverse clones))
+    (dolist (clone clones)
+      (overlay-put clone
+       'text-clones
+       (mapcar (lambda (idx)
+         (nth idx clones))
+           (overlay-get clone 'text-clones)))
+      (overlay-put clone 'modification-hooks '(text-clone--maintain))
+      (overlay-put clone 'evaporate t))))
+
+(define-minor-mode text-clone-mode
+  "Make text clones permanent in their file."
+  nil
+  nil
+  nil
+  (if text-clone-mode
+      (progn
+    (add-hook 'after-change-major-mode-hook #'text-clone-read t t)
+    (add-hook 'before-save-hook #'text-clone-save t t))
+    (save-excursion (add-file-local-variable 'text-clone-list nil))
+    (remove-hook 'before-save-hook #'text-clone-save t)
+    (remove-hook 'after-change-major-mode-hook #'text-clone-read t)))
+
+(add-hook 'org-mode-hook #'text-clone-mode)
