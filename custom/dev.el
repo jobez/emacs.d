@@ -80,11 +80,16 @@
 
 (defun hey-smsn ()
   (interactive)
-  (let ((vbuff (vterm)))
+  (let ((vbuff (shell (get-buffer-create "*smsn*")))
+        (smsn-root (get-buffer-create "*smsn-root*")))
     (process-send-string vbuff "cd ~/exps/langs/java/smsn/apache-tinkerpop-gremlin-server-3.2.5/")
     (process-send-string vbuff "\C-m")
     (process-send-string vbuff "./bin/gremlin-server.sh conf/jhnn-smsn.yaml")
-    (process-send-string vbuff "\C-m")))
+    (process-send-string vbuff "\C-m")
+    (sleep-for 5)
+    (with-current-buffer smsn-root
+      (smsn-mode)
+      (smsn-find-roots))))
 
 (use-package smsn-mode
   :config
@@ -97,7 +102,8 @@
 (defun export-smsn! ()
   (interactive)
   (smsn-write-yaml)
-  (let ((vbuff (vterm)))
+  (sleep-for 0.5)
+  (let ((vbuff (shell (get-buffer-create "smsn-export"))))
     (process-send-string vbuff "cp -r ~/exps/langs/java/smsn/apache-tinkerpop-gremlin-server-3.2.5/data/sources/private/ ~/orgs/structure/smsn/")
     (process-send-string vbuff "\C-m")
     (process-send-string vbuff "exit")
