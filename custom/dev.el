@@ -110,7 +110,19 @@
     (process-send-string vbuff "\C-m")
     (kill-buffer vbuff)))
 
+(quelpa
+ '(quelpa-use-package
+   :fetcher git
+   :url "https://github.com/quelpa/quelpa-use-package.git"))
 
+
+(require 'quelpa-use-package)
+
+(use-package bufler
+  :quelpa (bufler :fetcher github :repo "alphapapa/bufler.el")
+  :config
+  (setq bufler-face-prefix
+        "prism-level-"))
 
 
 
