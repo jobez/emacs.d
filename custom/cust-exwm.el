@@ -10,7 +10,7 @@
 (setq display-time-default-load-average nil)
 (display-time-mode t)
 
-;; (display-battery-mode t)
+ (display-battery-mode t)
 
 
 (require 'exwm)
@@ -75,6 +75,55 @@
    ([?\C-d] . delete)
    ([?\C-k] . (S-end delete))))
 
+(defun exwm-config-example ()
+  "Default configuration of EXWM."
+  ;; Set the initial workspace number.
+  (unless (get 'exwm-workspace-number 'saved-value)
+    (setq exwm-workspace-number 4))
+  ;; Make class name the buffer name
+  (add-hook 'exwm-update-class-hook
+            (lambda ()
+              (exwm-workspace-rename-buffer exwm-class-name)))
+  ;; Global keybindings.
+  (unless (get 'exwm-input-global-keys 'saved-value)
+    (setq exwm-input-global-keys
+          `(
+            ;; 's-r': Reset (to line-mode).
+            ([?\s-r] . exwm-reset)
+            ;; 's-w': Switch workspace.
+            ([?\s-w] . exwm-workspace-switch)
+            ;; 's-&': Launch application.
+            ([?\s-&] . (lambda (command)
+                         (interactive (list (read-shell-command "$ ")))
+                         (start-process-shell-command command nil command)))
+            ;; 's-N': Switch to certain workspace.
+            ,@(mapcar (lambda (i)
+                        `(,(kbd (format "s-%d" i)) .
+                          (lambda ()
+                            (interactive)
+                            (exwm-workspace-switch-create ,i))))
+                      (number-sequence 0 9)))))
+  ;; Line-editing shortcuts
+  (unless (get 'exwm-input-simulation-keys 'saved-value)
+    )
+  ;; Enable EXWM
+  (exwm-enable)
+  ;; Configure Ido
+  (exwm-config-ido)
+  ;; Other configurations
+  (exwm-config-misc))
+
+(setq exwm-input-simulation-keys
+          '(([?\C-b] . [left])
+            ([?\C-f] . [right])
+            ([?\C-p] . [up])
+            ([?\C-n] . [down])
+            ([?\C-a] . [home])
+            ([?\C-e] . [end])
+            ([?\M-v] . [prior])
+            ([?\C-v] . [next])
+            ([?\C-d] . [delete])
+            ([?\C-k] . [S-end delete])))
 ;; You can hide the mode-line of floating X windows by uncommenting the
 ;; following lines
 (add-hook 'exwm-floating-setup-hook #'exwm-layout-hide-mode-line)
@@ -82,7 +131,7 @@
 
 ;; You can hide the minibuffer and echo area when they're not used, by
 ;; uncommenting the following line
-(setq exwm-workspace-minibuffer-position 'bottom)
+;; (setq exwm-workspace-minibuffer-position 'top)
 
 ;; Do not forget to enable EXWM. It will start by itself when things are ready.
 (require 'exwm-systemtray)
@@ -157,6 +206,30 @@
 
 (add-to-list 'display-buffer-alist '("^*Async Shell Command*" . (display-buffer-no-window)))
 
+(exwm-input-set-key (kbd "M-y") #'jhnn/exwm-counsel-yank-pop)
+
+(defun jhnn/exwm-counsel-yank-pop ()
+  "Same as `counsel-yank-pop' and paste into exwm buffer."
+  (interactive)
+  (let ((inhibit-read-only t)
+        ;; Make sure we send selected yank-pop candidate to
+        ;; clipboard:
+        (yank-pop-change-selection t))
+    (call-interactively #'counsel-yank-pop))
+  (message "jhnn")
+  (when (derived-mode-p 'exwm-mode)
+    ;; https://github.com/ch11ng/exwm/issues/413#issuecomment-386858496
+    (message "jhnn")
+    (exwm-input--set-focus (exwm--buffer->id (window-buffer (selected-window))))
+    (exwm-input--fake-key ?\C-v)))
+
+
+
+(progn
+ (add-to-list 'load-path "~/exps/emacs/gpastel")
+ (add-hook 'exwm-init-hook #'gpastel-mode))
+
 (exwm-enable)
+
 
 (server-start)

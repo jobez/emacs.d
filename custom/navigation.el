@@ -64,8 +64,8 @@
   :diminish (ivy-mode . "")
   :bind
   (:map ivy-mode-map
-        ("C-'" . ivy-avy)
-        ("C-s" . swiper)
+        ;; ("C-'" . ivy-avy)
+        ("C-s" . counsel-grep-or-swiper)
         ("M-x" . counsel-M-x)
         ("M-y" . counsel-yank-pop)
         ("C-x C-f" . counsel-find-file)
@@ -90,9 +90,12 @@
   ;; no regexp by default
   (setq ivy-initial-inputs-alist nil)
   ;; configure regexp engine.
+  (setq ivy-format-function 'ivy-format-function-line)
   (setq ivy-re-builders-alist
 	;; allow input not in order
         '((t   . ivy--regex-ignore-order))))
+
+
 
 
 (setq magit-completing-read-function 'ivy-completing-read)

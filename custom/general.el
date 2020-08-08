@@ -102,13 +102,13 @@
 
 ;;remove all trailing whitespace and trailing blank lines before
 ;;saving the file
-(defvar live-ignore-whitespace-modes '(markdown-mode objc-mode))
-(defun live-cleanup-whitespace ()
-  (if (not (member major-mode live-ignore-whitespace-modes))
-      (let ((whitespace-style '(trailing empty)) )
-        (whitespace-cleanup))))
+;; (defvar live-ignore-whitespace-modes '(markdown-mode objc-mode))
+;; (defun live-cleanup-whitespace ()
+;;   (if (not (member major-mode live-ignore-whitespace-modes))
+;;       (let ((whitespace-style '(trailing empty)) )
+;;         (whitespace-cleanup))))
 
-(add-hook 'before-save-hook 'live-cleanup-whitespace)
+;; (add-hook 'before-save-hook 'live-cleanup-whitespace)
 
 ;; savehist keeps track of some history
 (setq savehist-additional-variables
