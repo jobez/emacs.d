@@ -182,7 +182,7 @@ See `org-capture-templates' for more information."
     (org-mode)
     (insert "* %?")
     (newline)
-    (call-interactively #'jhnn-org-query-backlink)
+    ;; (call-interactively #'jhnn-org-query-backlink)
     (newline)
     (insert "Entered on %U")
     (newline)
@@ -646,18 +646,17 @@ See command `bmkp-store-org-link'."
       (push (list link bmk-desc) org-stored-links)
       t))
 
-(defun my/org-journal-prompt ()
+(defun jhnn/org-journal-prompt ()
   "Show my Org Today Sidebar."
   (interactive)
   (org-sidebar-ql (org-agenda-files)
   '(tags "journal_prompt")
   ;; :action element-with-markers
   )
-  (org-ql-view )
   
   )
 
-;; random freewrite
+;;; random freewrite
 
 (defun random-choice (items)
   (let* ((size (length items))
@@ -679,16 +678,143 @@ See command `bmkp-store-org-link'."
 
 (defun jhnn/random-freewrite ()
   (interactive)
-  (->>  (org-ql-select "~/orgs/structure/journal/2020/freewrites.org"
-          '(or (heading "350") (heading "340"))
+  (->>  (org-ql-select '("~/orgs/structure/journal/2020/freewrites.org"
+                         "~/orgs/structure/refile.org")
+          '(or (heading "350")
+               (heading "340")
+               (heading "750")
+               (heading "freewrite"))
           :action (lambda ()
                     (propertize (org-get-heading t)
                                 'marker (copy-marker (point)))))
         random-choice
         indirect-goto))
 
+(defun jhnn/choose-dyad ()
+  (interactive)
+  (ivy-read
+   "choose opposites: "
+   (org-ql-select "~/orgs/structure/opposites.org"
+     '(level 2)
+     :action (lambda ()
+               (propertize (org-get-heading t)
+                           'marker (copy-marker (point)))))
+   :action 'jhnn-org-query-insert-backlink))
 
-;; (push (cons "Overview: journal prompts"
+(defun id->cloned-narrow-subtree (id)
+  (-let* (((filename . lino)
+           (org-id-find id)))
+    ;; (with-current-buffer ()
+    ;;    (org-narrow-to-subtree))
+    (with-current-buffer
+        (with-current-buffer (get-file-buffer filename)
+          (clone-indirect-buffer nil t))
+      (goto-char lino)
+      (org-show-context)
+      (org-narrow-to-element))))
+
+(defun jhnn/see-tinctured-journals ()
+  (interactive)
+  (ivy-read
+   "tinctures: "
+   (org-ql-select
+     "~/orgs/structure/journal/2020/journal.org"
+     '(property "TINCTURED_BY")
+     :action (lambda ()
+               (-let* ((tincture-link (org-entry-get nil "TINCTURED_BY"))
+                       ((id description) (-> (replace-regexp-in-string   (rx
+                                                                          "["
+                                                                          "["
+                                                                          (one-or-more
+                                                                           lower
+                                                                           upper)
+                                                                          ":"
+                                                                          (group (one-or-more
+                                                                                  (any lower
+                                                                                       upper
+                                                                                       num
+                                                                                       ?-
+                                                                                       ?(
+                                                                                         ?)
+                                                                                       space)))
+
+                                                                          "]"
+                                                                          "["
+                                                                          (group (one-or-more
+                                                                                  (any lower
+                                                                                       upper
+                                                                                       ?-
+                                                                                       ?(
+                                                                                         ?)
+                                                                                       ?,
+                                                                                       ?'
+                                                                                       "/"
+                                                                                       ??
+                                                                                       space)))
+                                                                          "]"
+                                                                          "]")
+                                                                         "\\1|\\2"
+                                                                         tincture-link)
+                                             (split-string "|"))))
+                 
+                 (propertize (format "%s ~> %s " description (org-get-heading t))
+                             'marker (copy-marker (point))
+                             'tincture-id id)
+                 ;; (propertize 
+                 ;; 'marker (copy-marker (point)))
+                 )))
+   :action
+   `(1
+     ("r" indirect-goto "go to entry")
+     ("l"
+      ,(-compose #'id->cloned-narrow-subtree
+                 (lambda (headline)
+                   (get-text-property 0 'tincture-id headline)))
+      "go to inciting")
+     )))
+
+(defun jhnn/backlinks ()
+  (interactive)
+ (ivy-read
+  "backlinks: "
+  (org-ql-select
+    (org-agenda-files)
+    '(regexp "BACKLINKS")
+    :action (lambda ()
+              (-let* ((backlink-start (save-excursion
+                                        (search-forward "BACKLINKS")
+                                        (point)))
+                      (backlink-end (save-excursion
+                                      (goto-char backlink-start)
+                                      (search-forward "END")
+                                      (point))))
+               
+               
+                (propertize (org-get-heading t)
+                            'marker (copy-marker (point))
+                            'backlinks (buffer-substring-no-properties backlink-start backlink-end)
+                            )
+                ;; (propertize 
+                                        ; 'marker (copy-marker (point)))
+                )))
+  :action
+  `(1
+    ("r" indirect-goto "go to entry")
+    ("l"
+     ,(-compose #'id->cloned-narrow-subtree
+                (lambda (headline)
+                  (get-text-property 0 'tincture-id headline)))
+     "go to inciting")
+    ("p"
+     (lambda (headline)
+       (with-output-to-temp-buffer "backlinks look like" 
+         (get-text-property 0 'backlinks headline)))
+     "see output")
+    )))
+
+
+
+;; (cons "Overview: journal prompts"
 ;;             (list :buffers-files #'org-agenda-files
 ;;                   :query '(tags "journal_prompt")
 ;;                   :sort '(date priority)
