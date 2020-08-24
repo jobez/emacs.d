@@ -713,6 +713,42 @@ See command `bmkp-store-org-link'."
       (org-show-context)
       (org-narrow-to-element))))
 
+(defun org-link-string->destructure (org-link-string)
+  (-> (replace-regexp-in-string   (rx
+                                   "["
+                                   "["
+                                   (one-or-more
+                                    lower
+                                    upper)
+                                   ":"
+                                   (group (one-or-more
+                                           (any lower
+                                                upper
+                                                num
+                                                ?-
+                                                ?(
+                                                  ?)
+                                                space)))
+
+                                   "]"
+                                   "["
+                                   (group (one-or-more
+                                           (any lower
+                                                upper
+                                                ?-
+                                                ?(
+                                                  ?)
+                                                ?,
+                                                ?'
+                                                "/"
+                                                ??
+                                                space)))
+                                   "]"
+                                   "]")
+                                  "\\1|\\2"
+                                  org-link-string)
+      (split-string "|")))
+
 (defun jhnn/see-tinctured-journals ()
   (interactive)
   (ivy-read
@@ -722,40 +758,7 @@ See command `bmkp-store-org-link'."
      '(property "TINCTURED_BY")
      :action (lambda ()
                (-let* ((tincture-link (org-entry-get nil "TINCTURED_BY"))
-                       ((id description) (-> (replace-regexp-in-string   (rx
-                                                                          "["
-                                                                          "["
-                                                                          (one-or-more
-                                                                           lower
-                                                                           upper)
-                                                                          ":"
-                                                                          (group (one-or-more
-                                                                                  (any lower
-                                                                                       upper
-                                                                                       num
-                                                                                       ?-
-                                                                                       ?(
-                                                                                         ?)
-                                                                                       space)))
-
-                                                                          "]"
-                                                                          "["
-                                                                          (group (one-or-more
-                                                                                  (any lower
-                                                                                       upper
-                                                                                       ?-
-                                                                                       ?(
-                                                                                         ?)
-                                                                                       ?,
-                                                                                       ?'
-                                                                                       "/"
-                                                                                       ??
-                                                                                       space)))
-                                                                          "]"
-                                                                          "]")
-                                                                         "\\1|\\2"
-                                                                         tincture-link)
-                                             (split-string "|"))))
+                       ((id description) (org-link-string->destructure tincture-link)))
                  
                  (propertize (format "%s ~> %s " description (org-get-heading t))
                              'marker (copy-marker (point))
@@ -773,44 +776,65 @@ See command `bmkp-store-org-link'."
       "go to inciting")
      )))
 
+(defun jhnn/walk
+    (prompt seq-as-space)
+  (ivy-read
+   prompt
+   seq-as-space
+   :action
+   `(1
+     ("r" (lambda (headline)
+            (if (get-text-property 0 'marker headline)
+                (indirect-goto headline)
+              (id->cloned-narrow-subtree (get-text-property 0 'backlink-id headline)))) "go to entry")
+     ("l"
+      ,(-compose #'id->cloned-narrow-subtree
+                 (lambda (headline)
+                   (get-text-property 0 'tincture-id headline)))
+      "go to inciting")
+     ("p"
+      (lambda (headline)
+        (jhnn/walk
+         (format "mentions of %s" headline)
+         (get-text-property 0 'backlinks headline))
+        )
+      "see output")
+     )))
+
 (defun jhnn/backlinks ()
   (interactive)
- (ivy-read
+  (jhnn/walk
   "backlinks: "
   (org-ql-select
-    (org-agenda-files)
-    '(regexp "BACKLINKS")
-    :action (lambda ()
-              (-let* ((backlink-start (save-excursion
-                                        (search-forward "BACKLINKS")
-                                        (point)))
-                      (backlink-end (save-excursion
-                                      (goto-char backlink-start)
-                                      (search-forward "END")
-                                      (point))))
-               
-               
-                (propertize (org-get-heading t)
-                            'marker (copy-marker (point))
-                            'backlinks (buffer-substring-no-properties backlink-start backlink-end)
-                            )
-                ;; (propertize 
+           (org-agenda-files)
+           '(regexp "BACKLINKS")
+           :action (lambda ()
+                     (-let* ((backlink-start (save-excursion
+                                               (search-forward ":BACKLINKS:\n")
+                                               (point)))
+                             (backlink-end (save-excursion
+                                             (goto-char backlink-start)
+                                             (search-forward ":END:")
+                                             (point)))
+                             (by-lines (split-string (buffer-substring-no-properties (+ backlink-start 5) (- backlink-end 7)) "\n")))
+                       
+                       
+                       (propertize (org-get-heading t)
+                                   'marker (copy-marker (point))
+                                   'backlinks (->>
+                                               by-lines
+                                               (--map (split-string it " <- ")
+                                                      )
+                                               (--map (-let* (((date link) it)
+                                                              ((id description) (org-link-string->destructure (or link ""))))
+                                                        (when description
+                                                          (propertize (format "%s / %s" (string-trim date) description)
+                                                                      'backlink-id id))))
+                                               (-filter 'identity))
+                                   )
+                       ;; (propertize 
                                         ; 'marker (copy-marker (point)))
-                )))
-  :action
-  `(1
-    ("r" indirect-goto "go to entry")
-    ("l"
-     ,(-compose #'id->cloned-narrow-subtree
-                (lambda (headline)
-                  (get-text-property 0 'tincture-id headline)))
-     "go to inciting")
-    ("p"
-     (lambda (headline)
-       (with-output-to-temp-buffer "backlinks look like" 
-         (get-text-property 0 'backlinks headline)))
-     "see output")
-    )))
+                       )))))
 
 
 
